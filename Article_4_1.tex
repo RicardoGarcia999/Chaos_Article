@@ -129,7 +129,7 @@ Hybrid Hyperchaotic Scheme}
 %% Abstract
 \begin{abstract}
 %% Text of abstract
-In modern digital security systems, the generation of uniform, strong, reliable, and attack-resistant randomness with hardware implementations, remains a topic of significant interest within the scientific community. This work presents the design and implementation of a robust Pseudorandom Number Generator (PRNG) for cryptographic applications by using hyperchaotic dynamics. This paper proposes a novel hybrid architecture that integrates a four-state continuous hyperchaotic system and a two-state discrete hyperchaotic map to enhance unpredictability. The chaotic properties are numerically validated with Lyapunov exponents and bifurcation diagrams. In experimental results, the designed PRNG is implemented on a DE2-115 FPGA board, translating the mathematical model into hardware description language with fixed-point arithmetic for resource and speed efficiency. A rigorous evaluation of security analysis and randomness tests assesses the quality of the generated sequences. The results confirm that the PRNG exhibits high-quality pseudorandom behavior, highly suitable for security applications.
+In modern digital security systems, the generation of uniform, strong, and attack-resistant pseudorandom numbers is a critical challenge. While chaotic systems offer excellent cryptographic properties, their digital hardware implementations often suffer from dynamical degradation. To address this, this paper proposes a novel hybrid Pseudorandom Number Generator (PRNG) architecture. While utilizing previously established 4D continuous and 2D discrete hyperchaotic systems, the main novelty of this work lies in their integration: a dynamic parametric perturbation mechanism where the 2D discrete map disrupts the parameters of the 4D system to actively mitigate digital degradation. Furthermore, the architecture introduces modular multiplication and a multiplexer-based XOR post-processing stage to enhance sequence unpredictability. The mathematical model is efficiently translated into a fixed-point VHDL implementation on a Terasic DE2-115 FPGA board. A rigorous evaluation of the generated sequences demonstrates extreme key sensitivity and optimal statistical properties, successfully passing the NIST 800-22 and TestU01 randomness test suites. The results confirm that the proposed hybrid PRNG exhibits high-quality pseudorandom behavior, making it highly suitable for secure communications, image encryption, and other cryptographic applications.
 \end{abstract}
 
 %%Graphical abstract
@@ -139,7 +139,7 @@ In modern digital security systems, the generation of uniform, strong, reliable,
 
 %%Research highlights
 \begin{highlights}
-\item Novel hybrid PRNG integrating 4D continuous and 2D discrete hyperchaotic systems.
+\item Novel hybrid PRNG architecture based on a dynamic coupling scheme between existing 4D continuous and 2D discrete hyperchaotic systems.
 \item Dynamic parametric perturbation to mitigate digital signal degradation
 \item Modular multiplication and non-linear processing enhance randomness
 \item Efficient FPGA implementation using fixed-point arithmetic in VHDL.
@@ -180,7 +180,9 @@ Modern chaotic PRNG designs typically apply new mathematical frameworks to simpl
 Research has explored high-dimensional continuous hyperchaotic systems (4D-7D) that produce complex, robust dynamics, and specialized behaviors such as multiple scrolls, hidden attractors, or no equilibria \cite{vaidyanathan_new_2021, benkouider_novel_2024,yang_hidden_2019, dong_hidden_2022, al-talib_new_2023}. 
 %\cite{vaidyanathan_new_2021, benkouider_novel_2024, vaidyanathan_5-d_2021,yang_hidden_2019, dong_hidden_2022,vaidyanathan_new_2020, al-talib_new_2023}. 
  
-At the same time, discrete chaotic maps, such as the enhanced Hénon-Logistic map \cite{hussein_new_2018}, offer greater computational efficiency for digital implementation, usually combining multiple such maps. In these studies, FPGAs are consistently cited as the preferred hardware platform due to their parallelism and high-speed processing capabilities \cite{dridi_design_2023}.
+At the same time, discrete chaotic maps, such as the enhanced Hénon-Logistic map \cite{hussein_new_2018}, offer greater computational efficiency for digital implementation, usually combining multiple such maps. In these studies, FPGAs are consistently cited as the preferred hardware platform due to their parallelism and high-speed processing capabilities \cite{dridi_design_2023,zhang_1D_2025}.
+
+Coupling various low dimensional chaotic systems in order to expendand their complexity has been explored \cite{tang_1D_2025,tang_2D_2025}. Another emerging hardware oriented approach for hyperchaos is discrete memristor based neural networks \cite{bao_grid_2025, bao_app_2025}.
 
 Other methods for enhancing the random nature of PRNGs have varied greatly, with new approaches such as chaotic neurons, 3D transformations, and discrete wavelet transforms \cite{tlelo-cuautle_chaotic_2020, zhang_color_2022, kaibou_real-time_2021}.
 
@@ -191,9 +193,11 @@ The literature also describes a range of other applications for chaotic PRNGs, i
 
 Considering such motivation, this work proposes a hybrid PRNG that combines a 4D continuous hyperchaotic generator with a 2D discrete hyperchaotic map and a parameter perturbation module. The discrete module dynamically perturbs parameters of the continuous system to mitigate digital degradation; modular multiplication and nonlinear post-processing further enhance unpredictability. The design is implemented in fixed-point VHDL on a Terasic DE2-115 FPGA and validated numerically and empirically via histogram uniformity assessments and the NIST 800-22 randomness test suite. The results demonstrate high-quality pseudorandom behavior suitable for cryptographic applications.
 
+While the 4D continuous hyperchaotic system and the 2D discrete map utilized in this work have been previously established in the literature, the primary novelty of this paper lies in their integration and the surrounding architecture. Specifically, the main contributions are: A novel dynamic coupling scheme where the 2D map parametrically perturbs the 4D system to actively mitigate digital degradation; The introduction of modular multiplication to enhance the chaotic state space; and A robust, non-linear post-processing design using dynamic multiplexing and XOR operations to ensure high cryptographic security and uniformity.
+
 The manuscript is outlined as follows. Section \ref{sec_2} of this paper establishes the common challenges of using chaotic systems for cryptographic purposes and details the mitigation strategies proposed in the literature. Section \ref{sec_3} describes the components of the proposed PRNG and the techniques used to improve unpredictability. Section \ref{sec_4} outlines the architecture and hardware implementation of the proposed PRNG. Section \ref{sec_5} presents the results of the validation process, including an analysis of statistical, chaotic, and cryptographic properties, along with a detailed comparison with existing literature. Section \ref{sec_6} summarizes and discusses the findings of the PRNG's performance.
 
-\section{Problem statement}\label{sec_2}
+\section{Background and motivation}\label{sec_2}
 For a PRNG to be usable in cryptographic applications, it must exhibit high sensitivity to the key, such that minor alterations result in completely different output sequences. It must also possess robust statistical properties, ensuring that the generated sequences are indistinguishable from a truly random source, and provide a large key space, with a recommended minimum of $2^{128}$, to effectively withstand brute-force attacks. The problem addressed here is designing an FPGA-implementable chaotic PRNG that resists digital degradation while meeting cryptographic statistical requirements.
 
 One of the challenges in implementing chaotic systems on digital hardware is dynamic degradation. The finite precision arithmetic and time discretization used can cause complex dynamics to collapse into short, predictable periodic cycles, eliminating unpredictability and compromising the PRNG's security \cite{senouci_fpga_2017, hobincu_fpga_2018}. For that reason, a cryptographically secure PRNG must be specifically designed to resist this degradation and preserve its long, non-repeating behavior. Common mitigation strategies include applying periodic or self-perturbation mechanisms that disrupt emergent cycles \cite{hocine_prng_2023}. 
@@ -276,8 +280,8 @@ Complementing this, bifurcation diagrams, Figure \ref{fig_3}, visually illustrat
 \caption{The 4D-HC4S bifurcation diagram as a $a_{4D}$ parameter sweep. (a) $x$ state. (b) $y$ state. (c) $z$ state. (d) $w$ state.}
 \label{fig_3}
 \end{figure*}
-The continuous system is discretized for digital implementation using the efficient and simple Euler method. 
-To accurately capture the hyperchaotic behavior,without causing chaotic degratation while minimizing the iteration count of the system, a time difference of $h=0.0001$ is used. This application of Euler’s method to 4D-HC4S results in Eq. \ref{eq_2}.
+The continuous system is discretized for digital implementation using the efficient and simple Euler method as it allows for lower computational cost per iteration compared to other Runge-Kutta methods. 
+To accurately capture the hyperchaotic behavior,without causing chaotic degratation while minimizing the number of iterations needed in the system, a time difference of $h=0.0001$ is used. This application of Euler’s method to 4D-HC4S results in Eq. \ref{eq_2}.
 \begin{equation}
 \begin{split}
  X_{n+1} &= X_n+h({\text{4D-HC4S}}(X_n, ParX))\\
@@ -317,7 +321,7 @@ As can be seen in the bifurcation diagram for this new system Figure \ref{fig_3.
 \label{fig_3.5}
 \end{figure*}
 
-\subsection{2D Hyperchaotic Map with amplitud control system}
+\subsection{2D Hyperchaotic Map with amplitude control system}
 The PRNG's complementary module uses a 2D hyperchaotic map with amplitude control (2D-HCAC) \cite{zhou_2d_2021}. This system is described by the map in Eq. \ref{eq_3}, with the states $U_n=(u_n,v_n)^T$ and parameters $ParU = (a_{2D},b_{2D},c_{2D},d_{2D})^T$. The attractor is shown in Figure \ref{fig_4}.
 \begin{equation}
 \begin{split}
@@ -382,7 +386,7 @@ $h$ & Q1.21 & $[-1, 1)$ & $2^{-21}$ \\
 \subsection{Parametric perturbations}
 To limit the problem of short cycles within the system, parametric perturbations are applied. This involves making small controlled changes to the parameters or states of a system during each iteration, thereby preventing the system from repeating its past behavior \cite{hocine_prng_2023, liu_hardware_2020}. As mentioned above, the complementary module (2D-HCAC) of the PRNG will be used to introduce these perturbations into the primary module (4D-EHC4S). 
 
-Sixteen bits are extracted from the two states of the complementary module and divided into four 8-bit sequences, which are distributed among the four parameters of the primary module. The perturbations are carefully scaled to ensure that they remain within a margin of $\Delta_p=\pm2^{-6}$, thus keeping the parameters within their hyperchaotic operating range. The system is then perturbed by adding these values to the respective parameters, as shown in Eq. \ref{eq_6} and Eq. \ref{eq_7}.
+Sixteen bits are extracted from the two states of the complementary module and divided into four 8-bit sequences, which are distributed among the four parameters of the primary module. In the following equations, the notation var[a : b] denotes the extraction of the binary sequence from bit position 'a' to bit position 'b' of the fractional part of the variable. The perturbations are carefully scaled to ensure that they remain within a margin of $\Delta_p=\pm2^{-6}$, thus keeping the parameters within their hyperchaotic operating range. The system is then perturbed by adding these values to the respective parameters, as shown in Eq. \ref{eq_6} and Eq. \ref{eq_7}.
 \begin{align}
 \label{eq_6}
 Pert(U_n) &=
@@ -518,7 +522,7 @@ KEY A & {$0000000000000000\_0000000000000000\_$ \\ $0000000000000000\_00000000_{
 KEY B & {$3C8D9A2B7F0E1654\_A9D8C7B6F5E43210\_$ \\ $B9A8D7C6F5E43210\_B9A8D7C6_{16}$} \\
 KEY C & {$AABBCCDDEEFF0011\_2233445566778899\_$ \\ $AABBCCDDEEFF0011\_22334455_{16}$} \\
 \end{tblr}
-\caption{Keys for PRNG trayectory Visualization.}
+\caption{Keys for PRNG trayectory visualization.}
 \label{tab_3.5}
 \end{table}
 
@@ -563,7 +567,7 @@ A fundamental characteristic of a cryptographically secure PRNG is its extreme s
 
 To evaluate this property, the normalized Hamming distance was measured between two output sequences generated from keys differing by a single bit. For an ideal PRNG, flipping one bit in the key should result in approximately $50\%$ of the output bits differing, indicating maximal divergence between the two sequences.
 
-The system was tested using the two distinct keys presented in Table~\ref{tab_4} (shown in hexadecimal format with underscores "$\_$" as separators for legibility). Each key was used to generate 8,000 output bits, and the resulting normalized Hamming distance was $48.98\%$, confirming the system's sensitivity to initial conditions.
+The system was tested using the two distinct keys presented in Table~\ref{tab_4} (shown in hexadecimal format with underscores "$\_$" as separators for legibility). Each key was used to generate 8,000 output bits, and the resulting normalized Hamming distance was $48.98\%$, confirming the system's key sensitivity.
 \begin{table}[h]
 \centering
 \begin{tblr}{
@@ -575,7 +579,7 @@ Key & Value \\
 KEY 1 & {$0123456789ABCDEF\_0123456789ABCDEF\_$ \\ $0123456789ABCDEF\_0123456 \boldsymbol{7}_{16}$} \\
 KEY 2 & {$0123456789ABCDEF\_0123456789ABCDEF\_$ \\ $0123456789ABCDEF\_0123456 \boldsymbol{8}_{16}$} \\
 \end{tblr}
-\caption{Keys for initial condition sensitivity.}
+\caption{Keys for Hamming distance.}
 \label{tab_4}
 \end{table}
 
@@ -601,7 +605,7 @@ Methods for analyzing the maximum Lyapunov exponent ($LE_{max}$) from a time ser
 \subsection{NIST 800-22 randomness test}
 The NIST 800-22 suite \cite{bassham_statistical_2010} represents the most rigorous and widely accepted standard for evaluating the randomness of PRNGs intended for cryptographic applications. Its 15 distinct tests examine PRNG sequences for exploitable patterns, biases, and correlations. Together, these tests determine whether a sequence generated can be considered cryptographically random.
 
-For a specific test to pass, its calculated p-value must be $\geq$ the significance level ($\alpha = 0.01$). Within the NIST framework, the reported p-value reflects the uniform distribution of p-values across all sequences analyzed. Furthermore, if the proportion of passing sequences is $\geq 0.97$ (for 100 sequences), the overall test is a pass. 
+For a specific test to pass, its calculated p-value must be greater or equal than the significance level ($\alpha = 0.01$). Within the NIST framework, the reported p-value reflects the chi-squared for the uniform distribution of p-values across all sequences analyzed. Furthermore, if the proportion of passing sequences is $\geq 0.97$ (for 100 sequences), the overall test is a pass. 
 
 In this study, 100 sequences of $10^6$ bits were generated using distinct random keys for analysis. As summarized in Table \ref{tab_5} (where an asterisk (*) denotes the average for tests involving multiple subtests), all tests within the NIST 800-22 suite produced a passing proportion. This comprehensive success demonstrates the suitability of the proposed PRNG for cryptographic applications.
 \begin{table}[h]
@@ -672,31 +676,36 @@ Method & Chaotic system & NIST & Key space & Key sensitivity & Throughput (Mb/s)
 Proposed PRNG & Hybrid & \checkmark & $224$ & \checkmark & 400 & EP4CE115 \\
 \cite{li_high-performance_2024} & MDDT & \checkmark & -- & -- & 14,400 & Kintex-7 \\
 \cite{nguyen_designing_2022} & 5D system & \checkmark & -- & -- & 6,780 & Zynq-7000 \\
+\cite{luo_design_2024} & 3D-NDCS & \checkmark & -- & -- & 15,000 & Artix-7 \\
+\cite{sun_dynamic_2025} & 1D-DIFC & \checkmark & -- & -- & 500 & Artix-7 \\
+\cite{fraga_design_2025} &  Fractional Lorenz system & \checkmark & 129 & -- & 4.99 & ESP32 \\
+\cite{bao_grid_2025} &  HNN & \checkmark & -- & \checkmark & 473 & Zynq XC7Z020\\
 \cite{hocine_prng_2023} & Logistic map & \checkmark & -- & -- & 4,015 & Zynq-7000 \\
 \cite{meranza-castillon_pseudorandom_2019} & Enhanced Henon map & \checkmark & $222$ & -- & -- & EP4CE115 \\
 \cite{murillo-escobar_pseudorandom_2023} & Sine-Henon & \checkmark & $230$ & \checkmark & 20.76 & ATmega2560 \\
 \cite{garipcan_hardware_2021} & Zigzag map & \checkmark & -- & \checkmark & 7.7 & EP4CGX150 \\
 \cite{ding_new_2019} & Logistic map & \checkmark & $80$ & -- & 0.1 & 0.13 $\mu$m \\
-\cite{yu_design_2021} & Hopfield neural network & \checkmark & $512$ & \checkmark & 16.2 & Zynq-7Z020 \\
-\cite{luo_design_2024} & 3D-NDCS & \checkmark & -- & -- & 15,000 & Artix-7 \\
-\cite{sun_dynamic_2025} & 1D-DIFC & \checkmark & -- & -- & 500 & Artix-7 \\
-\cite{fraga_design_2025} &  Fractional Lorenz system & \checkmark & 129 & -- & 4.99 & ESP32 \\
+\cite{yu_design_2021} & HNN & \checkmark & $512$ & \checkmark & 16.2 & Zynq-7Z020 \\
+
 \end{tblr}
 \caption{Comparisons with similar schemes in literature.}
 \label{tab_6}
 \end{table*}
-The data presented indicate that the proposed PRNG achieves results comparable to other established systems in the literature. However, it should be noted that the throughput of the proposed system is significantly lower than that of most other implementations. This reduced speed is mainly attributable to the use of the UART transmission protocol, which inherently limits the transmission rate of data.
+The data presented indicate that the proposed PRNG achieves results comparable to other established systems in the literature. However, it should be noted that the throughput of the proposed system is overall lower than that of most other implementations. 
 
 \section{Conclusion}\label{sec_6}
 This paper presented the design, implementation, and rigorous validation of a novel PRNG based on a hybrid hyperchaotic architecture. By cooperatively integrating a continuous 4D system (4D-HC4S) with a discrete 2D perturbing system (2D-HCAC), this work successfully enhanced the complexity and unpredictability essential for cryptographic security. The mathematical model was efficiently translated into a fixed-point VHDL implementation of the PRNG for a Terasic DE2-115 FPGA board. 
 
 The robustness of the architecture was improved by the implementation of several key mechanisms such as the application of modular multiplication for enhanced sensitivity, the use of dynamic parametric perturbations to counteract digital degradation, and a non-linear post-processing stage that incorporates multiplexing and XOR operations. Together, these features collectively strengthen the defenses of the system, ensuring its stability and reliability under various conditions.
 
-Furthermore, uniformity analysis through histograms and the chi-square test confirmed the excellent statistical distribution of the output. The generator also had essential cryptographic properties, including a large key space of 224 bits and extreme sensitivity to initial conditions to make it resilient against brute force and predictive attacks.
+Furthermore, uniformity analysis through histograms and the chi-square test confirmed the excellent statistical distribution of the output. The generator also had essential cryptographic properties, including a large key space of 224 bits and high key sensitivity to make it resilient against brute force and predictive attacks.
 
 The statistical results confirm the success of this approach, as the PRNG maintains an unpredictable dynamic. Most importantly, the generated bit streams passed the complete NIST 800-22 statistical test suite as well as the TestU01 test batteries, showing its high quality and suitability for cryptographic applications.
 
-Although the current implementation's throughput is constrained by the UART interface used for data extraction, the statistical quality of the generated sequences is comparable to other designs in the literature. In conclusion, this work validates a sophisticated hybrid hyperchaotic scheme as a compelling foundation for creating secure, resource-efficient, and high-quality hardware-based PRNGs, paving the way for its future integration into comprehensive security systems and other applications demanding robust randomness.
+Even though the throughput of the system is not as high as with others, the statistical quality of the generated sequences is comparable to other designs in the literature. 
+While this study comprehensively validates the statistical randomness and hardware efficiency of the PRNG, future work could focus on application-level demonstrations. Specifically, the integration of proposed architecture into a complete hardware-based chaos encryption scheme, such as secure real-time image or video encryption, to further demonstrate its practical cryptographic utility in real-world scenarios."
+
+In conclusion, this work validates a sophisticated hybrid hyperchaotic scheme as a compelling foundation for creating secure, resource-efficient, and high-quality hardware-based PRNGs, paving the way for its future integration into comprehensive security systems and other applications demanding robust randomness.
 %% Use \subsubsection, \paragraph, \subparagraph commands to 
 %% start 3rd, 4th and 5th level sections.
 %% Refer following link for more details.
@@ -783,6 +792,21 @@ Hussein WA, Al-Saidi NMG, Natiq H. A new 2d hénon-logistic map for producing hy
 
 \bibitem{dridi_design_2023}
 Dridi F, El Assad S, El Hadj Youssef W, Machhout M. Design, hardware implementation on FPGA and performance analysis of three chaos-based stream ciphers. Fractal and Fractional. 2023;7(2):197. https://doi.org/10.3390/fractalfract7020197.
+
+\bibitem{zhang_1D_2025}
+Zhang Y, Hua Z, Bao H, Huang H. 1-D Complex-Variable Chaotic model with hardware implementation. IEEE Transactions On Industrial Informatics. 22(3), 1659-1670. https://doi.org/10.1109/tii.2025.3629682.
+
+\bibitem{tang_1D_2025}
+Tang J, Zhao Y, Hou J, Song W, Wang J. A novel model for 1D chaotic map generation with FPGA implementation and PRNG application. Nonlinear Dynamics. 113(20), 28341-28361. https://doi.org/10.1007/s11071-025-11527-z.
+
+\bibitem{tang_2D_2025}
+Tang J, Hou J, Zhao Y. 2-D Chaotic Model With FPGA Implementation and Its Application in PRNG. IEEE Transactions On Industrial Electronics. 72(12), 14106-14115. https://doi.org/10.1109/tie.2025.3563711.
+
+\bibitem{bao_grid_2025}
+Bao H, Wang R, Wang N, Chen M, Bao B. Discrete Memristive Hopfield Neural Network with Grid-Polyhedral Hyperchaos for FPGA-Based Pseudorandom Number Generator. Neural Networks. 196, 108340. https://doi.org/10.1016/j.neunet.2025.108340.
+
+\bibitem{bao_app_2025}
+Bao H, Fan J, Hua Z, Xu Q, Bao B. Discrete Memristive Hopfield Neural Network and Application in Memristor-State-Based Encryption. IEEE Internet Of Things Journal. 12(15), 31843-31855. https://doi.org/10.1109/jiot.2025.3574171.
 
 \bibitem{tlelo-cuautle_chaotic_2020}
 Tlelo-Cuautle E, Díaz-Muñoz JD, González-Zapata AM, Li R, León-Salas WD, Fernández FV, et al. Chaotic image encryption using hopfield and hindmarsh–rose neurons implemented on FPGA. Sensors. 2020;20(5):1326. https://doi.org/10.3390/s20051326.
