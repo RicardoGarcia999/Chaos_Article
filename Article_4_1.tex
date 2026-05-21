@@ -306,7 +306,7 @@ XE_{n+1} &= \text{Mod}( {\text{Eu-4D}}(XE_n, ParX_n)) \\
 \end{split}
 \end{align}
 
-As can be seen in the bifurcation diagram for this new system Figure \ref{fig_3.5}, the system's sensitivity to initial conditions in its chaotic range are notably enhanced by the modular multiplication. This performance gain is a direct result of employing modular multiplication, strengthening chaotic properties, and expanding the range of parameters where chaos occurs.
+As can be seen in the bifurcation diagram for this new system Figure \ref{fig_3.5}, the system's sensitivity to initial conditions in its chaotic range is notably enhanced by the modular multiplication. This performance gain is a direct result of employing modular multiplication, strengthening chaotic properties, and expanding the range of parameters where chaos occurs.
 \begin{figure*}[!t]
 \centering
 \subfloat[]{\includegraphics[width=0.48\textwidth]{Figuras IEEE/bifurcation_4D_EHC4S/a.pdf}}% 1
@@ -586,7 +586,7 @@ KEY 2 & {$0123456789ABCDEF\_0123456789ABCDEF\_$ \\ $0123456789ABCDEF\_0123456 \b
 \subsection{Uniformity}
 A robust PRNG is mandated to produce output sequences that closely approximate a uniform distribution. Any inherent bias or tendencies in the generated values directly compromises the PRNG's security by increasing its vulnerability to cryptanalysis.
 
-Output uniformity was evaluated using a histogram of 256,000 interations of 8-bit values generated using the KEY1 and chi-square test. The frequency of each value should ideally be 1,000 for a uniform distribution. As depicted in Figure \ref{fig_11}, the observed frequencies align closely with this ideal.
+Output uniformity was evaluated using a histogram of 256,000 iterations of 8-bit values generated using the KEY1 and chi-square test. The frequency of each value should ideally be 1,000 for a uniform distribution. As depicted in Figure \ref{fig_11}, the observed frequencies align closely with this ideal.
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.72\textwidth]{Figuras IEEE/Histogram_PRNG_FPGA.pdf}
@@ -596,7 +596,7 @@ Output uniformity was evaluated using a histogram of 256,000 interations of 8-bi
 The resulting chi-square p-value ($p = 0.5103$) exceeded the standard significance level ($\alpha = 0.05$), and the calculated frequency variance, ($S^2 = 995.1059$), closely matches the expected variance of ($S^2 = 1,000$) for such a uniform distribution. This strongly confirms the uniformity of the PRNG's output.
 
 \subsection{Gottwald-Melbourne 0-1 test for chaos}
-Although chaos testing is not typically applied to PRNGs, given that they are not strictly chaotic systems, employing such tests can provide additional support for the notion of chaotic behavior within the PRNG, although the testing methods are different in this cases.
+Although chaos testing is not typically applied to PRNGs, given that they are not strictly chaotic systems, employing such tests can provide additional support for the notion of chaotic behavior within the PRNG, despite differences in testing methodology.
 
 The 0-1 test, developed by Gottwald-Melbourne \cite{gottwald_new_2004}, assesses chaos by calculating the correlation coefficient $K$ from the time series. A value of $K \approx 1$ indicates chaotic behavior, while $K \approx 0$ indicates a lack of chaos. An analysis of 5,000 sequences generated using KEY1 yielded a value $K = 0.9980$, effectively demonstrating chaotic content within the system.
 
@@ -615,6 +615,7 @@ In this study, 100 sequences of $10^6$ bits were generated using distinct random
   row{1} = {font=\bfseries},
   hline{1,2,Z} = {solid},
 }
+Test & p-Value & Proportion & Result \\
 Frequency (Monobit) Test    & $0.816537$ & $1.00$ & Passed \\
 Frequency Test within a Block   & $0.191687$ & $0.99$ & Passed \\
 Cumulative Sums Test*  & $0.486905$ & $0.99$ & Passed \\
@@ -636,10 +637,9 @@ Linear Complexity Test    & $0.851383$ & $0.98$ & Passed \\
 \end{table}
 
 \subsection{TestU01}
-TestU01 is an open source library to empirically test statiscial randomness in an PRNG. Within the libary it includes multiple batteries of tests that test the randomness of a PRNG.
-In the testing of this PRNG three batteries were used, Rabbit, Alphabit, and BlockAlphabit. This particular test batteries were particularly defined to test hardware random bit generators.
-Every battery contains many statistical tests, and one statistical test produces a p-value. For a PRNG to pass a statistical test, the p-value of that test shoul fall witin $[0.001,0.999]$.
-Using the same sequences for the previous test, the batteries Rabbit, Alphabit and BlockAlphabit were applied in order to test the PRNG. Table \ref{tab_5.1} shows that the proposed PRNG passes all statistical tests.
+TestU01 is an open-source library for empirically testing the statistical randomness of a PRNG. The library includes multiple batteries of tests that evaluate a PRNG’s randomness. In this study, three batteries were used: Rabbit, Alphabit, and BlockAlphabit. These specific test batteries were designed to test hardware random bit generators.
+Each battery contains many statistical tests, and each test produces a p‑value. For a PRNG to pass a statistical test, the p‑value should fall within $[0.001,0.999]$.
+Using the same sequences as in the previous test, the Rabbit, Alphabit, and BlockAlphabit batteries were applied to evaluate the PRNG. Table \ref{tab_5.1} shows that the proposed PRNG passes all statistical tests.
 \begin{table}[h]
 \centering
 \begin{tblr}{
