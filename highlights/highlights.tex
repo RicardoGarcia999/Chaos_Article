@@ -1,0 +1,32 @@
+\documentclass[12pt]{article}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{enumitem}
+\pagestyle{empty} % Removes page numbers/headers
+
+\begin{document}
+
+\begin{center}
+    \begin{minipage}{0.9\linewidth}
+        % Main heading
+        {\large Highlights} \\[0.6em]
+        
+        % Real title: smaller and bold
+        {\normalsize \textbf{Hybrid Hyperchaotic Pseudorandom Number Generator with Dynamic Perturbation}} \\[-1em]
+        
+        % Authors: normal size, not bolded
+        {\normalsize Ricardo Yair García-Muñoz, Samuel González-López,\\ 
+        Miguel Ángel Murillo-Escobar, and Manuel Omar Meranza-Castillón} \\[-1em]
+        
+        % Highlights list
+        \begin{itemize}[leftmargin=2.5em, itemsep=0.6em, label=\textbullet]
+            \item Novel hybrid PRNG architecture based on a dynamic coupling scheme between existing 4D continuous and 2D discrete hyperchaotic systems.
+            \item Dynamic parametric perturbation to mitigate digital signal degradation.
+            \item Modular multiplication and non-linear processing enhance randomness.
+            \item Efficient FPGA implementation using fixed-point arithmetic in VHDL.
+            \item Validated via NIST 800-22 and TestU01 tests with a robust 224-bit key space.
+        \end{itemize}
+    \end{minipage}
+\end{center}
+
+\end{document}

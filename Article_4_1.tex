@@ -54,7 +54,7 @@
 %% for the whole article with \linenumbers.
 %% \usepackage{lineno}
 
-\journal{Chaos, Solitons \& Fractals}
+\journal{Integration}
 
 \begin{document}
 
@@ -127,22 +127,22 @@
 %% Abstract
 \begin{abstract}
 %% Text of abstract
-In modern digital security systems, the generation of uniform, strong, and attack-resistant pseudorandom numbers is a critical challenge. While chaotic systems offer excellent cryptographic properties, their digital hardware implementations often suffer from dynamical degradation. To address this, this paper proposes a novel hybrid Pseudorandom Number Generator (PRNG) architecture. While utilizing previously established 4D continuous and 2D discrete hyperchaotic systems, the main novelty of this work lies in their integration: a dynamic parametric perturbation mechanism where the 2D discrete map disrupts the parameters of the 4D system to actively mitigate digital degradation. Furthermore, the architecture introduces modular multiplication and a multiplexer-based XOR post-processing stage to enhance sequence unpredictability. The mathematical model is efficiently translated into a fixed-point VHDL implementation on a Terasic DE2-115 FPGA board. A rigorous evaluation of the generated sequences demonstrates high key sensitivity and robust statistical properties, successfully passing the NIST 800-22 and TestU01 randomness test suites. The results confirm that the proposed hybrid PRNG exhibits high-quality pseudorandom behavior, making it highly suitable for secure communications, image encryption, and other cryptographic applications.
+Generating strong, attack-resistant pseudorandom numbers is critical for digital security, yet hardware implementations of chaotic systems often suffer from dynamical degradation. To address this, we propose a hybrid PRNG that integrates 4D continuous and 2D discrete hyperchaotic systems. The core innovation is a dynamic parametric perturbation mechanism, in which, the 2D map continuously adjusts the 4D system’s parameters to actively mitigate digital degradation. Additionally, modular multiplication and a multiplexer-based XOR post-processing stage enhance sequence unpredictability. Implemented in fixed-point VHDL on a Terasic DE2-115 FPGA, the design demonstrates high key sensitivity and robust statistical performance, successfully passing NIST 800-22 and TestU01 test suites. These results confirm the generator’s high-quality pseudorandom behavior and its suitability for secure communications, image encryption, and other cryptographic applications.
 \end{abstract}
 
 %%Graphical abstract
-\begin{graphicalabstract}
-\includegraphics[width=1\linewidth]{Figuras IEEE/Thumbnail/Article_Thumbnail.png}
-\end{graphicalabstract}
+% \begin{graphicalabstract}
+% \includegraphics[width=1\linewidth]{Figuras IEEE/Thumbnail/Article_Thumbnail.png}
+% \end{graphicalabstract}
 
-%%Research highlights
-\begin{highlights}
-\item Novel hybrid PRNG architecture based on a dynamic coupling scheme between existing 4D continuous and 2D discrete hyperchaotic systems.
-\item Dynamic parametric perturbation to mitigate digital signal degradation
-\item Modular multiplication and non-linear processing enhance randomness
-\item Efficient FPGA implementation using fixed-point arithmetic in VHDL.
-\item Validated via NIST 800-22 tests with a robust 224-bit key space.
-\end{highlights}
+% %%Research highlights
+% \begin{highlights}
+% \item Novel hybrid PRNG architecture based on a dynamic coupling scheme between existing 4D continuous and 2D discrete hyperchaotic systems.
+% \item Dynamic parametric perturbation to mitigate digital signal degradation
+% \item Modular multiplication and non-linear processing enhance randomness
+% \item Efficient FPGA implementation using fixed-point arithmetic in VHDL.
+% \item Validated via NIST 800-22 and TestU01 tests with a robust 224-bit key space.
+% \end{highlights}
 
 %% Keywords
 \begin{keyword}
