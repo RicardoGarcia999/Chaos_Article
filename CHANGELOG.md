@@ -23,3 +23,7 @@
 - Se realizaron debido a la separacion de los highlights y graphical abstact.
 
 - Tambien se actualizaron las referencias al formato de Integration.
+
+# V 4_1 integration reviewers
+## Referencias 
+- Se anadieron mas referencias al articulo con parrafos al final de la seccion 2 Back ground and motivation.

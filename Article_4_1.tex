@@ -127,7 +127,7 @@
 %% Abstract
 \begin{abstract}
 %% Text of abstract
-Generating strong, attack-resistant pseudorandom numbers is critical for digital security, yet hardware implementations of chaotic systems often suffer from dynamical degradation. To address this, we propose a hybrid PRNG that integrates 4D continuous and 2D discrete hyperchaotic systems. The core innovation is a dynamic parametric perturbation mechanism, in which, the 2D map continuously adjusts the 4D system’s parameters to actively mitigate digital degradation. Additionally, modular multiplication and a multiplexer-based XOR post-processing stage enhance sequence unpredictability. Implemented in fixed-point VHDL on a Terasic DE2-115 FPGA, the design demonstrates high key sensitivity and robust statistical performance, successfully passing NIST 800-22 and TestU01 test suites. These results confirm the generator’s high-quality pseudorandom behavior and its suitability for secure communications, image encryption, and other cryptographic applications.
+Generating strong, attack-resistant pseudorandom numbers is critical for digital security, yet hardware implementations of chaotic systems often suffer from dynamical degradation. To address this, we propose a hybrid pseudorandom number generator (PRNG) that integrates 4D continuous and 2D discrete hyperchaotic systems. The core innovation is a dynamic parametric perturbation mechanism, in which, the 2D map continuously adjusts the 4D system’s parameters to actively mitigate digital degradation. Additionally, modular multiplication and a multiplexer-based XOR post-processing stage enhance sequence unpredictability. Implemented in fixed-point hardware description language on a Terasic DE2-115 FPGA, the design demonstrates high key sensitivity and robust statistical performance, successfully passing NIST 800-22 and TestU01 test suites. These results confirm the generator’s high-quality pseudorandom behavior and its suitability for secure communications, image encryption, and other cryptographic applications.
 \end{abstract}
 
 %%Graphical abstract
@@ -171,7 +171,7 @@ Chaotic dynamical systems serve as a strong basis for Pseudorandom Number Genera
 
 While chaotic systems offer theoretically desirable properties, they are rarely utilized in practice due to implementation challenges. Real world implementations suffer from issues such as chaotic degradation, periodic behavior, limited complexity, and slow speeds, that will be discussed later. To address these concerns, current research focuses on increasing chaotic complexity while maintaining an efficient design and high speed.
 
-To demonstrate efficiency and speed, these PRNGs are often implemented in hardware, such as FPGAs or microcontrollers. However, directly analyzing random and secure behavior proves difficult. Instead, these systems require a statistical approach. Test suites such as NIST 800-22, DIEHARD, and TestU01 are used to assess high standards of unpredictability.
+To demonstrate efficiency and speed, these PRNGs are often implemented in hardware, such as Field-Programmable Gate Array (FPGAs) or microcontrollers. However, directly analyzing random and secure behavior proves difficult. Instead, these systems require a statistical approach. Test suites such as NIST 800-22, DIEHARD, and TestU01 are used to assess high standards of unpredictability.
 
 Modern chaotic PRNG designs typically apply new mathematical frameworks to simple chaotic maps, enhancing randomness while preserving hardware efficiency \cite{luo_design_2024,sun_dynamic_2025}. Other approaches leverage techniques such as higher dimensions, memristors, and fractional dimensions \cite{moussa_ultra_2026,fraga_design_2025}.
 
@@ -200,7 +200,13 @@ For a PRNG to be usable in cryptographic applications, it must exhibit high sens
 
 One of the challenges in implementing chaotic systems on digital hardware is dynamic degradation. The finite precision arithmetic and time discretization used can cause complex dynamics to collapse into short, predictable periodic cycles, eliminating unpredictability and compromising the PRNG's security \cite{senouci_fpga_2017, hobincu_fpga_2018}. For that reason, a cryptographically secure PRNG must be specifically designed to resist this degradation and preserve its long, non-repeating behavior. Common mitigation strategies include applying periodic or self-perturbation mechanisms that disrupt emergent cycles \cite{hocine_prng_2023}. 
 
-Lastly, post-processing techniques are used to improve output quality. This is important to counteract the weaknesses of discretization, and methods such as XOR operations, substitution boxes, and chaotic entropy pools are used to improve uniformity and reduce correlations in the output \cite{li_dynamic_2019, garipcan_trng_2020}.
+Post-processing techniques are used to improve output quality. This is important to counteract the weaknesses of discretization, and methods such as XOR operations, substitution boxes, and chaotic entropy pools are used to improve uniformity and reduce correlations in the output \cite{li_dynamic_2019, garipcan_trng_2020}.
+
+The use of transcendental functions in chaotic systems have enhanced system nonlinearities without increasing architectural complexity. By incorporating nonlinear exponentials and quadratic structures, researchers have successfully amplified randomness generation while maintaining computational efficiency \cite{shi_lossless_2026,feng_exploiting_2024}.
+
+To address the inherent limitations of traditional chaotic systems, new PRNG designs leverage neuromorphic computing and memristive technology. Specifically, memristors can be integrated to emulate biological synaptic plasticity. This is particularly evident in the development of Hopfield neural networks, where the implementation of memristive synapses and neuron maps results in highly complex, unpredictable chaotic dynamics \cite{lai_unified_2025,lai_encryption_2025,he_multi_2025,yu_extreme_2026,yu_novel_2026}.
+
+Finally, to further enhance encryption, modern schemes often use hybrid architectures. By post-processing the raw chaotic output with conventional cryptographic algorithms, such as SHA hash functions, researchers can achieve robust, high-entropy encryption \cite{meranza_novel_2026,lai_family_2025}.
 
 \section{Proposed pseudorandom number generator}\label{sec_3}
 As previously mentioned, this work proposes a hybrid PRNG architecture that leverages the strengths of continuous and discrete hyperchaotic dynamics. The main generator is based on a 4D continuous hyperchaotic system, while a 2D discrete hyperchaotic system dynamically perturbs its parameters to enhance unpredictability and mitigate digital degradation. The system is further improved with modular multiplication and non-linear post-processing.
@@ -844,6 +850,33 @@ C. Li, B. Feng, S. Li, J. Kurths, G. Chen, Dynamic analysis of digital chaotic m
 
 \bibitem{garipcan_trng_2020}
 A.M. Garipcan, E. Erdem, A TRNG using chaotic entropy pool as a post-processing technique: Analysis, design and FPGA implementation, Analog Integr. Circuits Signal Process. 103 (2020) 391–410. https://doi.org/10.1007/s10470-020-01605-0.
+
+\bibitem{shi_lossless_2026}
+X. Shi, Y. Su, X. Yang, W. Feng, X. Zhang, Z. Chen, G. Wen, H. Wen, 2026. Lossless Frequency-Domain Image Encryption via 3D Exponential Hyper-Chaotic Map and Integer Lifting Wavelet Transform. Axioms. 15, 315. https://doi.org/10.3390/axioms15050315.
+
+\bibitem{feng_exploiting_2024}
+W. Feng, J. Zhang, Y. Chen, Z. Qin, Y. Zhang, M. Ahmad, M. Woźniak, 2024. Exploiting robust quadratic polynomial hyperchaotic map and pixel fusion strategy for efficient image encryption. Expert Systems With Applications. 246, 123190. https://doi.org/10.1016/j.eswa.2024.123190.
+
+\bibitem{lai_unified_2025}
+Q. Lai, C. Zhu, X. Zhao, X. Sun, J. Hua, 2025. A Unified Framework for Generating 4-D Discrete Memristive Hyperchaotic Maps With Complex Dynamics and Application to Encryption. IEEE Internet of Things Journal. 12, 40934-40943. https://doi.org/10.1109/jiot.2025.3590465.
+
+\bibitem{lai_encryption_2025}
+Q. Lai, H. Hua, L. Yang, 2025. Encryption Design and Analysis of 3-D Medical Models in Internet of Medical Things Using a Novel Memristive Hyperchaotic Map. IEEE Internet of Things Journal. 12, 39019-39028. https://doi.org/10.1109/jiot.2025.3587815.
+
+\bibitem{he_multi_2025}
+T. He, F. Yu, Y. Lin, S. He, W. Yaoi, S. Cai, J. Jin, 2025. Multi-scroll hopfield neural network excited by memristive self-synapses and its application in image encryption. Chinese Physics B. 34, 120506. https://doi.org/10.1088/1674-1056/adfeff.
+
+\bibitem{yu_extreme_2026}
+F. Yu, X. Wang, Y. Xiao, Y. He, W. Yao, S. Cai, J. Jin, 2026. Extreme multistability in discrete memristive neuron maps and implications for dual-field applications. Integration. 109, 102688. https://doi.org/10.1016/j.vlsi.2026.102688.
+
+\bibitem{yu_novel_2026}
+F. Yu, R. Guo, M. Zheng, W. Yao, D. Zhang, S. Cai, 2026. Novel approach to time series forecasting based on memristive Hopfield Neural Network with hidden heterogeneous and homogeneous extreme multistability. Chaos Solitons Fractals. 210, 118626. https://doi.org/10.1016/j.chaos.2026.118626.
+
+\bibitem{meranza_novel_2026}
+M. Meranza-Castillón, C. Cruz-Hernández, R. López-Gutiérrez, S. González-López, M. Murillo-Escobar, 2026. A novel image cryptosystem for FPGA based on 8-bit pseudorandom number generator with enhanced chaos and SHA-256. Integration. 110, 102779. https://doi.org/10.1016/j.vlsi.2026.102779.
+
+\bibitem{lai_family_2025}
+Q. Lai, Y. Liu, 2025. A family of image encryption schemes based on hyperchaotic system and cellular automata neighborhood. Science China Technological Sciences. 68 (3). https://doi.org/10.1007/s11431-024-2678-7.
 
 \bibitem{benettin_lyapunov_1980}
 G. Benettin, L. Galgani, A. Giorgilli, J.-M. Strelcyn, Lyapunov characteristic exponents for smooth dynamical systems and for Hamiltonian systems; a method for computing all of them. Part 1: Theory, Meccanica 15 (1980) 9–20. https://doi.org/10.1007/BF02128236.
