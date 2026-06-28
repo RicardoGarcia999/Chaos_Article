@@ -127,7 +127,7 @@
 %% Abstract
 \begin{abstract}
 %% Text of abstract
-Chaotic systems are vital for secure pseudorandom number generators (PRNGs), yet their hardware implementations suffer from dynamic degradation, where finite precision collapses complex dynamics into predictable short cycles. To address this gap, we propose a novel FPGA-implementable PRNG designed to resist digital degradation while meeting strict cryptographic requirements. This study integrates a 4D continuous and a 2D discrete hyperchaotic system. The core innovation is a dynamic parametric perturbation mechanism, where the 2D map continuously adjusts the 4D system’s parameters. Additionally, modular multiplication and multiplexer-based XOR post-processing enhance unpredictability. Implemented on a Terasic DE2-115 FPGA, the design demonstrates high key sensitivity, a uniform output distribution, and successfully passes the NIST 800-22 and TestU01 statistical test suites with minimal resource usage. These results validate the generator as a secure, efficient foundation for hardware-based PRNGs, making it suitable for secure communications, image encryption, and other cryptographic applications.
+Chaotic systems are at the heart of secure pseudorandom number generators (PRNGs), this chaotic PRNG need to be secure and fast enough for real world application. Yet their hardware implementations suffer from dynamic degradation, where finite precision collapses complex dynamics into predictable short cycles. To address this gap, we propose a novel FPGA-implementable PRNG designed to resist digital degradation while meeting strict cryptographic requirements. This study integrates a 4D continuous and a 2D discrete hyperchaotic system. The core innovation is a dynamic parametric perturbation mechanism, where the 2D map continuously adjusts the 4D system’s parameters. Additionally, modular multiplication and multiplexer-based XOR post-processing enhance unpredictability. Implemented on a Terasic DE2-115 FPGA, the design demonstrates high key sensitivity, a uniform output distribution, and successfully passes the NIST 800-22 and TestU01 statistical test suites with minimal resource usage. These results validate the generator as a secure, efficient foundation for hardware-based PRNGs, making it suitable for secure communications, image encryption, and other cryptographic applications.
 \end{abstract}
 
 %%Graphical abstract
@@ -213,7 +213,9 @@ As previously mentioned, this work proposes a hybrid PRNG architecture that leve
 
 \subsection{4D hyperchaotic four-scroll system}
 The basis of the primary generator is a 4D continuous hyperchaotic system (4D-HC4S), proposed in \cite{vaidyanathan_new_2021}.
- This system was selected because its hyperchaotic behavior provides richer dynamical complexity than low-dimensional chaotic maps, while its four states enable multiple independent output streams and a substantially larger, more distributed key space through their initial conditions and system parameters. Additionally, all nonlinearities in the system are polynomial, which eliminates the need to emulate transcendental functions or specialized hardware components. This simplifies implementation and allows for higher throughput.
+
+This system was selected because its hyperchaotic behavior provides richer dynamical complexity than low-dimensional chaotic maps, while its four states enable multiple independent output streams and a substantially larger, more distributed key space through their initial conditions and system parameters. Additionally, all nonlinearities in the system are polynomial, which eliminates the need to emulate transcendental functions or specialized hardware components. This simplifies implementation and while maintianing high chaotic behavior.
+
 This system is described by the following set of differential equations Eq. \ref{eq_1} with the states $X(t)=(x(t), y(t), z(t), w(t))^T $ and parameters $ParX = (a_{4D},b_{4D},c_{4D},d_{4D})^T$. The representation of the system attractor is provided in Figure \ref{fig_1}.
 \begin{equation}
 \begin{split}
@@ -285,7 +287,7 @@ Complementing this, bifurcation diagrams, Figure \ref{fig_3}, visually illustrat
 \label{fig_3}
 \end{figure*}
 For digital implementation, the continuous system is discretized using the efficient and simple Euler method, since it offers lower computational cost per iteration than more resource intensive Runge–Kutta methods.
-To accurately capture the hyperchaotic behavior,without causing chaotic degradation while minimizing the number of iterations needed in the system, a time difference of $h=0.0001$ is used. This application of Euler’s method to 4D-HC4S results in Eq. \ref{eq_2}.
+To accurately capture the hyperchaotic behavior,without causing chaotic degradation while minimizing the number of iterations needed in the system, a time difference of $h=0.0001$ is used, higher values resulted in the chaotic behavior degrating. This application of Euler’s method to 4D-HC4S results in Eq. \ref{eq_2}.
 \begin{equation}
 \begin{split}
  X_{n+1} &= X_n+h({\text{4D-HC4S}}(X_n, ParX))\\
@@ -366,7 +368,7 @@ The bifurcation diagram presented in Figure \ref{fig_5}, further corroborates th
 \label{fig_5}
 \end{figure*}
 
-
+\subsection{Paramaters and perturbations selection}
 To optimize resource usage, all states and parameters are represented using signed fixed-point arithmetic. Custom Q formats were assigned to each variable based on its dynamic range and the precision required to preserve the system's chaotic behavior. In particular, the parameters and states of both systems must be maintained at a precision such that marginal quantization errors do not affect their chaotic dynamics. The system parameters were selected to strictly match those specified in the original publications. Deviating significantly from these nominal values can cause the system to exit the chaotic regime, converge to periodic orbits, or exhibit instability.
 
 A perturbation margin of $\Delta_m=\pm2^{-5}$ was determined to be the safe threshold, particularly for the 2D-HCAC system. Since two distinct perturbation sources must be accounted for, parametric perturbation and key integration, the latter requiring 16 bits of precision, a standard fractional precision of $\Delta_{st}=\pm2^{-21}$ was adopted for most variables, satisfying $\Delta_{st}\le\Delta_m\cdot2^{-16}$. For the states of 4D-EHC4S specifically, higher fractional precision of $2^{-31}$ is used, since the least significant bits of these states are directly extracted to form the PRNG output. Greater precision in these states therefore provides more usable bits per sample, improving the quality of the generated sequence.
@@ -440,7 +442,7 @@ Finally, these three selected streams are combined via an XOR operation to produ
 
 \section{Hardware implementation}\label{sec_4}
 \subsection{Hardware}
-For the hardware realization of this work, the Terasic DE2-115 development board serves as the platform for this work. This robust development board is equipped with an Altera Cyclone IV E EP4CE115F29C7 FPGA chip running a 50 MHz clock. This FPGA is a widely adopted choice in contemporary research efforts \cite{meranza-castillon_pseudorandom_2019} due to its advantageous balance of cost-effectiveness, low power consumption, and substantial logic resources.
+For the hardware realization of this work, the Terasic DE2-115 development board serves as the platform for this work. This robust development board is equipped with an Altera Cyclone IV E EP4CE115F29C7 FPGA chip with a max clock frequency of 50 MHz clock. This FPGA is a widely adopted choice in contemporary research efforts \cite{meranza-castillon_pseudorandom_2019} due to its advantageous balance of cost-effectiveness, low power consumption, and substantial logic resources.
 
 Using an 8-bit output width for the PRNG yields a throughput of 400 Mb/s. While increasing the output width could achieve higher throughput, it may also degrade the quality of the generated random sequence.
 
@@ -592,14 +594,14 @@ KEY 2 & {$0123456789ABCDEF\_0123456789ABCDEF\_$ \\ $0123456789ABCDEF\_0123456 \b
 \subsection{Uniformity}
 A robust PRNG is mandated to produce output sequences that closely approximate a uniform distribution. Any inherent bias or tendencies in the generated values directly compromises the PRNG's security by increasing its vulnerability to cryptanalysis.
 
-Output uniformity was evaluated using a histogram of 256,000 iterations of 8-bit values generated using the KEY1 and chi-square test. The frequency of each value should ideally be 1,000 for a uniform distribution. As depicted in Figure \ref{fig_11}, the observed frequencies align closely with this ideal.
+Output uniformity was evaluated using a histogram of 25,600,000 iterations of 8-bit values generated using the KEY1 and chi-square test. The frequency of each value should ideally be $1 \times 10^{5}$ for a uniform distribution. As depicted in Figure \ref{fig_11}, the observed frequencies align closely with this ideal.
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.72\textwidth]{Figuras IEEE/Histogram_PRNG_FPGA.pdf}
+\includegraphics[width=0.72\textwidth]{Figuras IEEE/Histogram_PRNG_FPGA_25_6_MILL.pdf}
 \caption{PRNG histogram.\label{fig_11}}
 \end{figure}
 
-The resulting chi-square p-value ($p = 0.5103$) exceeded the standard significance level ($\alpha = 0.05$), and the calculated frequency variance, ($S^2 = 995.1059$), closely matches the expected variance of ($S^2 = 1,000$) for such a uniform distribution. This strongly confirms the uniformity of the PRNG's output.
+The resulting chi-square p-value ($p = 0.41631$) exceeded the standard significance level ($\alpha = 0.05$), and the calculated frequency variance, ($S^2 = 1.0162 \times 10^{5}$), closely matches the expected variance of ($S^2 = 0.9961 \times 10^{5}$) for such a uniform distribution. This strongly confirms the uniformity of the PRNG's output.
 
 \subsection{Gottwald-Melbourne 0-1 test for chaos}
 Although chaos testing is not typically applied to PRNGs, given that they are not strictly chaotic systems, employing such tests can provide additional support for the notion of chaotic behavior within the PRNG, despite differences in testing methodology.
