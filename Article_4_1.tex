@@ -543,7 +543,7 @@ KEY C & {$AABBCCDDEEFF0011\_2233445566778899\_$ \\ $AABBCCDDEEFF0011\_22334455_{
 \section{Eficiency and security analysis}\label{sec_5}
 This section shows the results of several chaos and randomness tests to ensure suitability for cryptographic use. 
 \subsection{Resources used}
-An analysis of the computational resources consumed by the PRNG confirms that the PRNG implemented is not resource intensive and will not limit other functionalities within the platform. Table \ref{tab_3} presents a comprehensive overview of the resources used by the PRNG. The PRNG exhibits minimal resource consumption, with most categories utilizing less than $5\%$ of the available resources. In particular, multipliers account for the highest proportion of usage, at $26\%$, showing their role in the arithmetic operations of the system.
+An analysis of the computational resources consumed by the PRNG confirms that the PRNG implemented is not resource intensive and will not limit other functionalities within the platform. Table \ref{tab_3} presents a comprehensive overview of the resources used by the PRNG. The PRNG exhibits minimal resource consumption, with most categories utilizing less than $5\%$ of the available resources. In particular, multipliers account for the highest proportion of usage, at $26\%$, showing their role in the arithmetic operations of the system. In this configuration, the system was able to achieve a throughput of 400 Mb/s using the fpga 50 MHz clock.
 
 \begin{table}[h]
 \centering
@@ -575,7 +575,7 @@ A fundamental characteristic of a cryptographically secure PRNG is its extreme s
 
 To evaluate this property, the normalized Hamming distance was measured between two output sequences generated from keys differing by a single bit. For an ideal PRNG, flipping one bit in the key should result in approximately $50\%$ of the output bits differing, indicating maximal divergence between the two sequences.
 
-The system was tested using the two distinct keys presented in Table~\ref{tab_4} (shown in hexadecimal format with underscores "$\_$" as separators for legibility). Each key was used to generate 8,000 output bits, and the resulting normalized Hamming distance was $48.98\%$, confirming the system's key sensitivity.
+The system was tested using 100 distinct keys, each distinct from a reference key $KEY_\text{ref}$ (see Table \ref{tab_4} for its hexadecimal representation, where underscores serve as visual separators). For each key, 100,000 output bits were generated and compared bitwise to the reference key's output. The normalized Hamming distances resulted in a mean of $49.981\%$ with a normalized standard deviation of $1.499 \times 10^{-3}$,  indicating strong sensitivity to the initial key.
 \begin{table}[h]
 \centering
 \begin{tblr}{
@@ -584,17 +584,16 @@ The system was tested using the two distinct keys presented in Table~\ref{tab_4}
   hline{1,2,Z} = {solid},
 }
 Key & Value \\
-KEY 1 & {$0123456789ABCDEF\_0123456789ABCDEF\_$ \\ $0123456789ABCDEF\_0123456 \boldsymbol{7}_{16}$} \\
-KEY 2 & {$0123456789ABCDEF\_0123456789ABCDEF\_$ \\ $0123456789ABCDEF\_0123456 \boldsymbol{8}_{16}$} \\
+$KEY_\text{ref}$ & {$0123456789ABCDEF\_0123456789ABCDEF\_$ \\ $0123456789ABCDEF\_01234567_{16}$}
 \end{tblr}
-\caption{Keys for Hamming distance.}
+\caption{Key reference for Hamming distance.}
 \label{tab_4}
 \end{table}
 
 \subsection{Uniformity}
 A robust PRNG is mandated to produce output sequences that closely approximate a uniform distribution. Any inherent bias or tendencies in the generated values directly compromises the PRNG's security by increasing its vulnerability to cryptanalysis.
 
-Output uniformity was evaluated using a histogram of 25,600,000 iterations of 8-bit values generated using the KEY1 and chi-square test. The frequency of each value should ideally be $1 \times 10^{5}$ for a uniform distribution. As depicted in Figure \ref{fig_11}, the observed frequencies align closely with this ideal.
+Output uniformity was evaluated using a histogram of 25,600,000 iterations of 8-bit values generated using $KEY_\text{ref}$ and chi-square test. The frequency of each value should ideally be $1 \times 10^{5}$ for a uniform distribution. As depicted in Figure \ref{fig_11}, the observed frequencies align closely with this ideal.
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.72\textwidth]{Figuras IEEE/Histogram_PRNG_FPGA_25_6_MILL.pdf}
@@ -606,7 +605,7 @@ The resulting chi-square p-value ($p = 0.41631$) exceeded the standard significa
 \subsection{Gottwald-Melbourne 0-1 test for chaos}
 Although chaos testing is not typically applied to PRNGs, given that they are not strictly chaotic systems, employing such tests can provide additional support for the notion of chaotic behavior within the PRNG, despite differences in testing methodology.
 
-The 0-1 test, developed by Gottwald-Melbourne \cite{gottwald_new_2004}, assesses chaos by calculating the correlation coefficient $K$ from the time series. A value of $K \approx 1$ indicates chaotic behavior, while $K \approx 0$ indicates a lack of chaos. An analysis of 5,000 sequences generated using KEY1 yielded a value $K = 0.9980$, effectively demonstrating chaotic content within the system.
+The 0-1 test, developed by Gottwald-Melbourne \cite{gottwald_new_2004}, assesses chaos by calculating the correlation coefficient $K$ from the time series. A value of $K \approx 1$ indicates chaotic behavior, while $K \approx 0$ indicates a lack of chaos. An analysis of 5,000 sequences generated using $KEY_\text{ref}$ yielded a value $K = 0.9980$, effectively demonstrating chaotic content within the system.
 
 Methods for analyzing the maximum Lyapunov exponent ($LE_{max}$) from a time series prove beneficial in this context. Applying the Rosenstein algorithm \cite{rosenstein_practical_1993} to the PRNG's output resulted in $LE_{max} = 0.674924$. Although this value is smaller than that observed in the standalone 4D-HC4S system, its positive nature serves as further evidence to support the chaotic characteristics embedded within the PRNG.
 

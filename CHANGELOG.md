@@ -28,8 +28,11 @@
 ## Referencias 
 - Se anadieron mas referencias al articulo con parrafos al final de la seccion 2 Back ground and motivation.
 
+## Articulo
 - Se anadio una seccion de parametros y perturbaticones para justificar la seleccion de variables
 
 - Se anadio la frequencia del reloj del sistema
 
 - Se cambio el histograma de 256,000 sammples a 25,600,000
+
+- Se cambio la distancia hamming para comparar 100
