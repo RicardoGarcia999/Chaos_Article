@@ -19,7 +19,7 @@
 %% SP 2008/03/01
 %% $Id: elsarticle-template-num.tex 272 2025-01-09 17:36:26Z rishi $
 %%
-\documentclass[preprint, 12pt]{elsarticle}
+\documentclass[preprint, 12pt, sort&compress]{elsarticle}
 
 %% Use the option review to obtain double line spacing
 %% \documentclass[authoryear,preprint,review,12pt]{elsarticle}
@@ -131,16 +131,9 @@
 %% Abstract
 \begin{abstract}
 %% Text of abstract
-\begin{tcolorbox}[
-    colback=yellow!20,       % background colour (light yellow)
-    colframe=yellow!20,      % same as background to hide the frame
-    breakable,               % allow page breaks
-    sharp corners,           % optional: removes rounded corners
-    boxrule=0pt,             % no border
-    left=5pt, right=5pt,     % inner padding
-]
+{\color{red}
 Chaotic systems offer strong potential as foundations for pseudorandom number generators (PRNGs) in cryptographic applications. However, hardware implementations suffer from dynamical degradation, where finite-precision arithmetic collapses chaotic trajectories into short, predictable periodic orbits. Existing countermeasures rely on high-dimensional systems, increasing costs without resolving the issue. We propose a novel PRNG implemented on a Field-Programmable Gate Array (FPGA) that integrates a 4D continuous hyperchaotic system with a 2D discrete map. The core innovation is a dynamic parametric perturbation mechanism, where the 2D map modulates the 4D system's parameters to sustain complex dynamics under finite precision. Modular multiplication and multiplexer-based XOR post-processing further enhance unpredictability. The design achieves high key sensitivity, uniform output distribution, and passes both NIST 800-22 and TestU01 test suites with low resource utilization. These results validate it as a secure, efficient hardware-based PRNG for secure communications, image encryption, and other cryptographic applications.
-\end{tcolorbox}
+}
 \end{abstract}
 
 %%Graphical abstract
@@ -216,30 +209,30 @@ For a PRNG to be usable in cryptographic applications, it must exhibit high sens
 One of the challenges in implementing chaotic systems on digital hardware is dynamic degradation. The finite precision arithmetic and time discretization used can cause complex dynamics to collapse into short, predictable periodic cycles, eliminating unpredictability and compromising the PRNG's security \cite{senouci_fpga_2017, hobincu_fpga_2018}. For that reason, a cryptographically secure PRNG must be specifically designed to resist this degradation and preserve its long, non-repeating behavior. Common mitigation strategies include applying periodic or self-perturbation mechanisms that disrupt emergent cycles \cite{hocine_prng_2023}. 
 
 Post-processing techniques are used to improve output quality. This is important to counteract the weaknesses of discretization, and methods such as XOR operations, substitution boxes, and chaotic entropy pools are used to improve uniformity and reduce correlations in the output \cite{li_dynamic_2019, garipcan_trng_2020}.
-\begin{tcolorbox}[
-    colback=yellow!20,       % background colour (light yellow)
-    colframe=yellow!20,      % same as background to hide the frame
-    breakable,               % allow page breaks
-    sharp corners,           % optional: removes rounded corners
-    boxrule=0pt,             % no border
-    left=5pt, right=5pt,     % inner padding
-]
+
+{\color{red}
 The use of transcendental functions in chaotic systems have enhanced system nonlinearities without increasing architectural complexity. By incorporating nonlinear exponentials and quadratic structures, researchers have successfully amplified randomness generation while maintaining computational efficiency \cite{shi_lossless_2026,feng_exploiting_2024}.
 
 To address the inherent limitations of traditional chaotic systems, new PRNG designs leverage neuromorphic computing and memristive technology. Specifically, memristors can be integrated to emulate biological synaptic plasticity. This is particularly evident in the development of Hopfield neural networks, where the implementation of memristive synapses and neuron maps results in highly complex, unpredictable chaotic dynamics \cite{lai_unified_2025,lai_encryption_2025,he_multi_2025,yu_extreme_2026,yu_novel_2026}.
 
 Finally, to further enhance encryption, modern schemes often use hybrid architectures. By post-processing the raw chaotic output with conventional cryptographic algorithms, such as SHA hash functions, researchers can achieve robust, high-entropy encryption \cite{meranza_novel_2026,lai_family_2025}.
-\end{tcolorbox}
+}
 
 \section{Proposed pseudorandom number generator}\label{sec_3}
 As previously mentioned, this work proposes a hybrid PRNG architecture that leverages the strengths of continuous and discrete hyperchaotic dynamics. The main generator is based on a 4D continuous hyperchaotic system, while a 2D discrete hyperchaotic system dynamically perturbs its parameters to enhance unpredictability and mitigate digital degradation. The system is further improved with modular multiplication and non-linear post-processing.
 
+{\color{red}
+The systems chosen in this work are 4D continuous hyperchaotic system (4D-HC4S), proposed in \cite{vaidyanathan_new_2021} and 
+This system was selected because its hyperchaotic behavior provides richer dynamical complexity than low-dimensional chaotic maps, reaching a max LE of 3.5213 while its four states enable multiple independent output streams and a substantially larger, more distributed key space through their initial conditions and system parameters. 
+
+The PRNG's complementary module uses a 2D hyperchaotic map with amplitude control (2D-HCAC) \cite{zhou_2d_2021}.
+Similarly to the previous system, 2D-HCAC has been choosen for this work due to its higher than averga Lyapunov exponent for its dimensionality. 
+
+Introducing higher dimensional systems can increase the system’s randomness, but it also raises computational overhead, which may render the design inefficient. The trade-off between added randomness and computational cost should be carefully considered when selecting the system dimensionality. Additionally, all nonlinearities in the system are polynomial, which eliminates the need to emulate transcendental functions or specialized hardware components. This simplifies implementation and while maintianing high chaotic behavior.
+}
+
 \subsection{4D hyperchaotic four-scroll system}
-The basis of the primary generator is a 4D continuous hyperchaotic system (4D-HC4S), proposed in \cite{vaidyanathan_new_2021}.
-
-This system was selected because its hyperchaotic behavior provides richer dynamical complexity than low-dimensional chaotic maps, while its four states enable multiple independent output streams and a substantially larger, more distributed key space through their initial conditions and system parameters. Additionally, all nonlinearities in the system are polynomial, which eliminates the need to emulate transcendental functions or specialized hardware components. This simplifies implementation and while maintianing high chaotic behavior.
-
-This system is described by the following set of differential equations Eq. \ref{eq_1} with the states $X(t)=(x(t), y(t), z(t), w(t))^T $ and parameters $ParX = (a_{4D},b_{4D},c_{4D},d_{4D})^T$. The representation of the system attractor is provided in Figure \ref{fig_1}.
+The continuos system 4D-HC4S is described by the following set of differential equations Eq. \ref{eq_1} with the states $X(t)=(x(t), y(t), z(t), w(t))^T $ and parameters $ParX = (a_{4D},b_{4D},c_{4D},d_{4D})^T$. The representation of the system attractor is provided in Figure \ref{fig_1}.
 \begin{equation}
 \begin{split}
 \frac{dX}{dt} &=
@@ -335,7 +328,17 @@ XE_{n+1} &= \text{Mod}( {\text{Eu-4D}}(XE_n, ParX_n)) \\
 \end{split}
 \end{align}
 
-As can be seen in the bifurcation diagram for this new system Figure \ref{fig_3.5}, the system's sensitivity to initial conditions in its chaotic range is notably enhanced by the modular multiplication. This performance gain is a direct result of employing modular multiplication, strengthening chaotic properties, and expanding the range of parameters where chaos occurs.
+As can be seen in the bifurcation diagram for this new system Figure \ref{fig_3.5}, the system's sensitivity to initial conditions in its chaotic range is notably enhanced by the modular multiplication. 
+This performance gain is a direct result of employing modular multiplication, strengthening chaotic properties, and expanding the range of parameters where chaos occurs.
+{\color{red}
+Due to the multiplier value the Lyapunov exponents of the discretized system, in nats/iteration are given by Eq. \ref{eq_EHC4S}.
+\begin{align}
+\label{eq_EHC4S}
+LE &\approx \ln(multiplier) \times LE({\text{Eu-4D}})
+\end{align}
+Thus the all the LEs of the system approach 9.4114. While a higher value of the multiplier may seem a much better approach, the higher computational cost of using the multipliers needs to be taken into account, more discussion on the parameters selected is given i a future section.
+}
+
 \begin{figure*}[!t]
 \centering
 \subfloat[]{\includegraphics[width=0.48\textwidth]{Figuras IEEE/bifurcation_4D_EHC4S/a.pdf}}% 1
@@ -351,7 +354,7 @@ As can be seen in the bifurcation diagram for this new system Figure \ref{fig_3.
 \end{figure*}
 
 \subsection{2D Hyperchaotic Map with amplitude control system}
-The PRNG's complementary module uses a 2D hyperchaotic map with amplitude control (2D-HCAC) \cite{zhou_2d_2021}. This system is described by the map in Eq. \ref{eq_3}, with the states $U_n=(u_n,v_n)^T$ and parameters $ParU = (a_{2D},b_{2D},c_{2D},d_{2D})^T$. The attractor is shown in Figure \ref{fig_4}.
+The discrete 2D system 2D-HCAC is described by the map in Eq. \ref{eq_3}, with the states $U_n=(u_n,v_n)^T$ and parameters $ParU = (a_{2D},b_{2D},c_{2D},d_{2D})^T$. The attractor is shown in Figure \ref{fig_4}.
 \begin{equation}
 \begin{split}
  U_{n+1} &=
@@ -391,23 +394,22 @@ The bifurcation diagram presented in Figure \ref{fig_5}, further corroborates th
 \label{fig_5}
 \end{figure*}
 
-\begin{tcolorbox}[
-    colback=yellow!20,       % background colour (light yellow)
-    colframe=yellow!20,      % same as background to hide the frame
-    breakable,               % allow page breaks
-    sharp corners,           % optional: removes rounded corners
-    boxrule=0pt,             % no border
-    left=5pt, right=5pt,     % inner padding
-]
+{\color{red}
 \subsection{Paramaters and perturbations selection}
 To optimize resource usage, all states and parameters are represented using signed fixed-point arithmetic. Custom Q formats were assigned to each variable based on its dynamic range and the precision required to preserve the system's chaotic behavior. In particular, the parameters and states of both systems must be maintained at a precision such that marginal quantization errors do not affect their chaotic dynamics. The system parameters were selected to strictly match those specified in the original publications. Deviating significantly from these nominal values can cause the system to exit the chaotic regime, converge to periodic orbits, or exhibit instability.
 
-The parameter for modular multiplication. 12227 has been choosen empirically in order to maximize the uniformity of the system output. This variable needs to be big enough to effectively mix the various parts of the dimension.
+Regarding the parameter for modular multiplication, a sweep of values was made for multiple sets of lengths, the chi-square p-value was measured looking to optimize this value for the multiple output lengths. 12227 has been choosen empirically in order to maximize the uniformity of the system output. This variable needs to be big enough to effectively mix the various parts of the dimension, while not to big to cause high computational overhead.
+The results can be seen in figure \ref{fig_multi}.
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=0.72\textwidth]{Figuras IEEE/Multi_histo_chi.pdf}
+\caption{Multiplicator sweep.\label{fig_multi}}
+\end{figure}
 
 A perturbation margin of $\Delta_m=\pm2^{-5}$ was determined to be the safe threshold, particularly for the 2D-HCAC system. Since two distinct perturbation sources must be accounted for, parametric perturbation and key integration, the latter requiring 16 bits of precision, a standard fractional precision of $\Delta_{st}=\pm2^{-21}$ was adopted for most variables, satisfying $\Delta_{st}\le\Delta_m\cdot2^{-16}$. For the states of 4D-EHC4S specifically, higher fractional precision of $2^{-31}$ is used, since the least significant bits of these states are directly extracted to form the PRNG output. Greater precision in these states therefore provides more usable bits per sample, improving the quality of the generated sequence.
 
 The format of the variables for each system and their precision can be seen in Table \ref{tab_1}.
-\end{tcolorbox}
+}
 
 \begin{table}[h]
 \centering
@@ -477,16 +479,7 @@ Finally, these three selected streams are combined via an XOR operation to produ
 
 \section{Hardware implementation}\label{sec_4}
 \subsection{Hardware}
-\begin{tcolorbox}[
-    colback=yellow!20,       % background colour (light yellow)
-    colframe=yellow!20,      % same as background to hide the frame
-    breakable,               % allow page breaks
-    sharp corners,           % optional: removes rounded corners
-    boxrule=0pt,             % no border
-    left=5pt, right=5pt,     % inner padding
-]
-For the hardware realization of this work, the Terasic DE2-115 development board serves as the platform for this work. This robust development board is equipped with an Altera Cyclone IV E EP4CE115F29C7 FPGA chip with a max clock frequency of 50 MHz clock. This FPGA is a widely adopted choice in contemporary research efforts \cite{meranza-castillon_pseudorandom_2019} due to its advantageous balance of cost-effectiveness, low power consumption, and substantial logic resources.
-\end{tcolorbox}
+For the hardware realization of this work, the Terasic DE2-115 development board serves as the platform for this work. This robust development board is equipped with an Altera Cyclone IV E EP4CE115F29C7 FPGA chip with a {\color{red} clock frequency of 50 MHz clock}. This FPGA is a commonly adopted choice in contemporary research efforts  \cite{meranza-castillon_pseudorandom_2019} due to its advantageous balance of cost-effectiveness, low power consumption, and substantial logic resources.
 
 Using an 8-bit output width for the PRNG yields a throughput of 400 Mb/s. While increasing the output width could achieve higher throughput, it may also degrade the quality of the generated random sequence.
 
@@ -619,16 +612,9 @@ A fundamental characteristic of a cryptographically secure PRNG is its extreme s
 
 To evaluate this property, the normalized Hamming distance was measured between two output sequences generated from keys differing by a single bit. For an ideal PRNG, flipping one bit in the key should result in approximately $50\%$ of the output bits differing, indicating maximal divergence between the two sequences.
 
-\begin{tcolorbox}[
-    colback=yellow!20,       % background colour (light yellow)
-    colframe=yellow!20,      % same as background to hide the frame
-    breakable,               % allow page breaks
-    sharp corners,           % optional: removes rounded corners
-    boxrule=0pt,             % no border
-    left=5pt, right=5pt,     % inner padding
-]
+{\color{red}
 The system was tested using 100 distinct keys, each distinct from a reference key $KEY_\text{ref}$ (see Table \ref{tab_4} for its hexadecimal representation, where underscores serve as visual separators). For each key, 100,000 output bits were generated and compared bitwise to the reference key's output. The normalized Hamming distances resulted in a mean of $49.981\%$ with a normalized standard deviation of $1.499 \times 10^{-3}$,  indicating strong sensitivity to the initial key.
-\end{tcolorbox}
+}
 \begin{table}[h]
 \centering
 \begin{tblr}{
