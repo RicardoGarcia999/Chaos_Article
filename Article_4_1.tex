@@ -334,7 +334,7 @@ This performance gain is a direct result of employing modular multiplication, st
 Due to the multiplier value the Lyapunov exponents of the discretized system, in nats/iteration are given by Eq. \ref{eq_EHC4S}.
 \begin{align}
 \label{eq_EHC4S}
-LE &\approx \ln(multiplier) \times LE({\text{Eu-4D}})
+LE &\approx \ln(multiplier) + LE({\text{Eu-4D}})_{cont} \times h
 \end{align}
 Thus the all the LEs of the system approach 9.4114. While a higher value of the multiplier may seem a much better approach, the higher computational cost of using the multipliers needs to be taken into account, more discussion on the parameters selected is given i a future section.
 }
@@ -488,7 +488,7 @@ To enable efficient transmission of the generated data for analysis, the simple 
 \subsection{Key integration}
 To initiate pseudorandom sequence generation, a key is used to alter the system variables. By modifying the initial conditions and parameters of both the primary and complementary chaotic modules, this key ensures that the PRNG produces a unique sequence for every different key.
 
-The system utilizes a 224-bit key, and this key is divided into 16-bit segments. These segments are scaled to a predefined margin of $\Delta_k=\pm2^{-6}$ so that the chaotic systems used retain their hyperchaotic properties within their respective operational ranges. The segments are then allocated to each of the 14 variables across both chaotic modules. The initialization of the system states and parameters is defined by $var_b$ as the base value and $var_0$ as the initial value at the first iteration, which is expressed in Eq. \ref{eq_12} and Eq. \ref{eq_13}. Table \ref{tab_2} provides a detailed key bit distribution.
+The system utilizes a 224-bit key, and this key is divided into 16-bit segments. These segments are scaled to a predefined margin of $\Delta_k=\pm2^{-6}$ for the chaotic systems used to retain their hyperchaotic properties within their respective operational ranges. The segments are then allocated to each of the 14 variables across both chaotic modules. The initialization of the system states and parameters is defined by $var_b$ as the base value and $var_0$ as the initial value at the first iteration, which is expressed in Eq. \ref{eq_12} and Eq. \ref{eq_13}. Table \ref{tab_2} provides a detailed key bit distribution.
 \begin{align}
 \label{eq_12}
 K_i &= KEY\left[223-16i:208-16i\right] \\
@@ -580,7 +580,7 @@ KEY C & {$AABBCCDDEEFF0011\_2233445566778899\_$ \\ $AABBCCDDEEFF0011\_22334455_{
 \section{Eficiency and security analysis}\label{sec_5}
 This section shows the results of several chaos and randomness tests to ensure suitability for cryptographic use. 
 \subsection{Resources used}
-An analysis of the computational resources consumed by the PRNG confirms that the PRNG implemented is not resource intensive and will not limit other functionalities within the platform. Table \ref{tab_3} presents a comprehensive overview of the resources used by the PRNG. The PRNG exhibits minimal resource consumption, with most categories utilizing less than $5\%$ of the available resources. In particular, multipliers account for the highest proportion of usage, at $26\%$, showing their role in the arithmetic operations of the system. In this configuration, the system was able to achieve a throughput of 400 Mb/s using the fpga 50 MHz clock.
+An analysis of the computational resources consumed by the PRNG confirms that the PRNG implemented is not resource intensive and will not limit other functionalities within the platform. Table \ref{tab_3} presents a comprehensive overview of the resources used by the PRNG. The PRNG exhibits minimal resource consumption, with most categories utilizing less than $3\%$ of the available resources. In particular, multipliers account for the highest proportion of usage, at $23\%$, showing their role in the arithmetic operations of the system. In this configuration, the system was able to achieve a throughput of 400 Mb/s using the fpga 50 MHz clock.
 
 \begin{table}[h]
 \centering
@@ -590,14 +590,12 @@ An analysis of the computational resources consumed by the PRNG confirms that th
   hline{1,2,Z} = {solid}, % Top, after header, bottom
 }
 Resource & Amount & Available & Use \\
-Total logic elements & $5,705$ & $114,480$ & $5\%$ \\
-Total combinational functions & $5,655$ & $114,480$ & $5\%$ \\
-Dedicated logic registers & $415$ & $114,480$ & $<1\%$ \\
-Total registers & $415$ & -- & -- \\
+Total logic elements & $3,646$ & $114,480$ & $3\%$ \\
+Total registers & $1,123$ & $117,053$ & $<1\%$ \\
 Total pins & $4$ & $529$ & $<1\%$ \\
 Total virtual pins & $0$ & -- & -- \\
-Total memory bits & $0$ & $3,981,312$ & $0\%$ \\
-Embedded Multiplier 9-bit elements & $139$ & $532$ & $26\%$ \\
+Total memory bits & $28,672$ & $3,981,312$ & $<1\%$ \\
+Embedded Multiplier 9-bit elements & $124$ & $532$ & $23\%$ \\
 Total PLLs & $0$ & $4$ & $0\%$ \\
 \end{tblr}
 \caption{PRNG resource use on FPGA.}
@@ -631,16 +629,9 @@ $KEY_\text{ref}$ & {$0123456789ABCDEF\_0123456789ABCDEF\_$ \\ $0123456789ABCDEF\
 
 \subsection{Uniformity}
 A robust PRNG is mandated to produce output sequences that closely approximate a uniform distribution. Any inherent bias or tendencies in the generated values directly compromises the PRNG's security by increasing its vulnerability to cryptanalysis.
-\begin{tcolorbox}[
-    colback=yellow!20,       % background colour (light yellow)
-    colframe=yellow!20,      % same as background to hide the frame
-    breakable,               % allow page breaks
-    sharp corners,           % optional: removes rounded corners
-    boxrule=0pt,             % no border
-    left=5pt, right=5pt,     % inner padding
-]
+{\color{red}
 Output uniformity was evaluated using a histogram of 25,600,000 iterations of 8-bit values generated using $KEY_\text{ref}$ and chi-square test. The frequency of each value should ideally be $1 \times 10^{5}$ for a uniform distribution. As depicted in Figure \ref{fig_11}, the observed frequencies align closely with this ideal.
-\end{tcolorbox}
+}
 
 \begin{figure}[h]
 \centering
@@ -671,21 +662,21 @@ In this study, 100 sequences of $10^6$ bits were generated using distinct random
   hline{1,2,Z} = {solid},
 }
 Test & p-Value & Proportion & Result \\
-Frequency (Monobit) Test    & $0.816537$ & $1.00$ & Passed \\
-Frequency Test within a Block   & $0.191687$ & $0.99$ & Passed \\
-Cumulative Sums Test*  & $0.486905$ & $0.99$ & Passed \\
-Runs Test    & $0.911413$ & $0.98$ & Passed \\
-Longest Run of Ones in a Block Test & $0.595549$ & $1.00$ & Passed \\
-Binary Matrix Rank Test  & $0.080519$ & $0.98$ & Passed \\
-Discrete Fourier Transform (Spectral) Test  & $0.213309$ & $0.97$ & Passed \\
-Non-overlapping Template Matching Test* & $0.463286$ & $0.99$ & Passed \\
-Overlapping Template Matching Test  & $0.419021$ & $0.99$ & Passed \\
-Maurer's Universal Statistical Test  & $0.924076$ & $0.99$ & Passed \\
-Approximate Entropy Test   & $0.013569$ & $0.99$ & Passed \\
-Random Excursions Test*  & $0.513097$ & $0.98$ & Passed \\
-Random Excursions Variant Test* & $0.409080$ & $1.00$ & Passed \\
-Serial Test*   & $0.406738$ & $0.99$ & Passed \\
-Linear Complexity Test    & $0.851383$ & $0.98$ & Passed \\
+Frequency (Monobit) Test    & $0.015700$ & $1.00$ & Passed \\
+Frequency Test within a Block   & $0.616305$ & $0.99$ & Passed \\
+Cumulative Sums Test*  & $0.081217$ & $0.99$ & Passed \\
+Runs Test    & $0.289667$ & $1.00$ & Passed \\
+Longest Run of Ones in a Block Test & $0.616305$ & $1.00$ & Passed \\
+Binary Matrix Rank Test  & $0.897763$ & $0.97$ & Passed \\
+Discrete Fourier Transform (Spectral) Test  & $0.999438$ & $0.98$ & Passed \\
+Non-overlapping Template Matching Test* & $0.496761$ & $0.99$ & Passed \\
+Overlapping Template Matching Test  & $0.213309$ & $0.98$ & Passed \\
+Maurer's Universal Statistical Test  & $0.554420$ & $0.98$ & Passed \\
+Approximate Entropy Test   & $0.699313$ & $1.00$ & Passed \\
+Random Excursions Test*  & $0.465728$ & $0.99$ & Passed \\
+Random Excursions Variant Test* & $0.467517$ & $0.99$ & Passed \\
+Serial Test*   & $0.064670$ & $1.00$ & Passed \\
+Linear Complexity Test    & $0.897763$ & $1.00$ & Passed \\
 \end{tblr}
 \caption{PRNG NIST 800-22 results.}
 \label{tab_5}
@@ -727,8 +718,8 @@ width = \linewidth,
   column{6} = {halign=c, wd=22mm},  % Throughput column
   column{7} = {halign=c, wd=22mm},  % Device column
 }
-Method & Chaotic system & NIST & Key space & Key sensitivity & Throughput (Mb/s) & Device \\
-Proposed PRNG & Hybrid & \checkmark & $224$ & \checkmark & 400 & EP4CE115 \\
+Method & Chaotic system & NIST 800-22& Key space & Key sensitivity & Throughput (Mb/s) & Device \\
+Proposed PRNG & Hybrid & \checkmark & $224$ & \checkmark & 66.6 & EP4CE115 \\
 \cite{li_high-performance_2024} & MDDT & \checkmark & -- & -- & 14,400 & Kintex-7 \\
 \cite{nguyen_designing_2022} & 5D system & \checkmark & -- & -- & 6,780 & Zynq-7000 \\
 \cite{luo_design_2024} & 3D-NDCS & \checkmark & -- & -- & 15,000 & Artix-7 \\
