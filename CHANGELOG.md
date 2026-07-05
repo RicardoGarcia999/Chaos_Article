@@ -25,6 +25,9 @@
 - Tambien se actualizaron las referencias al formato de Integration.
 
 # V 4_1 integration reviewers
+## Major revision
+- Se hizo pipelining al sistema haciendolo mas lento pero asegurando su time analysis.
+
 ## Referencias 
 - Se anadieron mas referencias al articulo con parrafos al final de la seccion 2 Back ground and motivation.
 

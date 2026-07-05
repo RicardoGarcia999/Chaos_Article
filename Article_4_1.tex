@@ -331,12 +331,12 @@ XE_{n+1} &= \text{Mod}( {\text{Eu-4D}}(XE_n, ParX_n)) \\
 As can be seen in the bifurcation diagram for this new system Figure \ref{fig_3.5}, the system's sensitivity to initial conditions in its chaotic range is notably enhanced by the modular multiplication. 
 This performance gain is a direct result of employing modular multiplication, strengthening chaotic properties, and expanding the range of parameters where chaos occurs.
 {\color{red}
-Due to the multiplier value the Lyapunov exponents of the discretized system, in nats/iteration are given by Eq. \ref{eq_EHC4S}.
+The Lyapunov exponents of the discretized system, in nats/iteration, are given by Eq. \ref{eq_EHC4S}.
 \begin{align}
 \label{eq_EHC4S}
 LE &\approx \ln(multiplier) + LE({\text{Eu-4D}})_{cont} \times h
 \end{align}
-Thus the all the LEs of the system approach 9.4114. While a higher value of the multiplier may seem a much better approach, the higher computational cost of using the multipliers needs to be taken into account, more discussion on the parameters selected is given i a future section.
+Thus the all the LEs of the system approach 9.4114 in this case. While a higher value of the multiplier or parameters may seem a much better approach, the higher computational cost of using the multipliers needs to be taken into account, more discussion on the parameters selected is given i a future section.
 }
 
 \begin{figure*}[!t]
@@ -406,13 +406,14 @@ The results can be seen in figure \ref{fig_multi}.
 \caption{Multiplicator sweep.\label{fig_multi}}
 \end{figure}
 
-A perturbation margin of $\Delta_m=\pm2^{-5}$ was determined to be the safe threshold, particularly for the 2D-HCAC system. Since two distinct perturbation sources must be accounted for, parametric perturbation and key integration, the latter requiring 16 bits of precision, a standard fractional precision of $\Delta_{st}=\pm2^{-21}$ was adopted for most variables, satisfying $\Delta_{st}\le\Delta_m\cdot2^{-16}$. For the states of 4D-EHC4S specifically, higher fractional precision of $2^{-31}$ is used, since the least significant bits of these states are directly extracted to form the PRNG output. Greater precision in these states therefore provides more usable bits per sample, improving the quality of the generated sequence.
+A perturbation margin of $\Delta_m=\pm2^{-5}$ was determined to be the safe threshold, particularly for the 2D-HCAC system. Since two distinct perturbation sources must be accounted for, parametric perturbation and key integration, the latter requiring 16 bits of precision, a standard fractional precision of $\Delta_{st}=\pm2^{-21}$ was adopted for most variables, satisfying $\Delta_{st}\le\Delta_m\cdot2^{-16}$. The same fractional presicion was used for the states of 4D-EHC4S, though their overall precision shouldn't greatly affect the system's behavior, due to the presence of the multiplier.
 
 The format of the variables for each system and their precision can be seen in Table \ref{tab_1}.
 }
 
 \begin{table}[h]
 \centering
+\footnotesize
 \begin{tblr}{
   colspec = {c c c c},
   row{1} = {font=\bfseries},
@@ -420,7 +421,7 @@ The format of the variables for each system and their precision can be seen in T
 }
 Variable & Format (Qn.m) & Variable limits & Precision \\
 $ParX$ & Q6.21 & $[-32, 32)$ & $2^{-21}$ \\
-$XE$ & Q1.31 & $[-1, 1)$ & $2^{-31}$ \\
+$XE$ & Q1.31 & $[-1, 1)$ & $2^{-21}$ \\
 $ParU$ & Q3.21 & $[-4, 4)$ & $2^{-21}$ \\
 $U$ & Q3.21 & $[-4, 4)$ & $2^{-21}$ \\
 $h$ & Q1.21 & $[-1, 1)$ & $2^{-21}$ \\
@@ -431,7 +432,7 @@ $h$ & Q1.21 & $[-1, 1)$ & $2^{-21}$ \\
 \subsection{Parametric perturbations}
 To limit the problem of short cycles within the system, parametric perturbations are applied. This involves making small controlled changes to the parameters or states of a system during each iteration, thereby preventing the system from repeating its past behavior \cite{hocine_prng_2023, liu_hardware_2020}. As mentioned above, the complementary module (2D-HCAC) of the PRNG will be used to introduce these perturbations into the primary module (4D-EHC4S). 
 
-Sixteen bits are extracted from the two states of the complementary module and divided into four 8-bit sequences, which are distributed among the four parameters of the primary module. In the following equations, the notation var[a : b] denotes the extraction of the binary sequence from bit position 'a' to bit position 'b' of the fractional part of the variable. The perturbations are carefully scaled to ensure that they remain within a margin of $\Delta_p=\pm2^{-6}$, thus keeping the parameters within their hyperchaotic operating range. The system is then perturbed by adding these values to the respective parameters, as shown in Eq. \ref{eq_6} and Eq. \ref{eq_7}.
+Sixteen bits are extracted from the two states of the complementary module and divided into four 8-bit sequences, which are distributed among the four parameters of the primary module. In the following equations, the notation var[a : b] denotes the extraction of the binary sequence from bit position 'a' to bit position 'b' of the fractional part of the variable. The perturbations are carefully scaled to affect the least significant bits of each variable. The system is then perturbed by adding these values to the respective parameters, as shown in Eq. \ref{eq_6} and Eq. \ref{eq_7}.
 \begin{align}
 \label{eq_6}
 Pert(U_n) &=
@@ -449,7 +450,7 @@ ParX_{n+1}&= ParX_0+2^{-13}Pert(U_n)
 
 A post-processing module is incorporated in the final stage of the PRNG to introduce additional nonlinearities into the generated output, enhancing its cryptographic strength. A common and effective technique for this purpose is the use of a simple XOR gate \cite{benkouider_novel_2024, dridi_design_2023, dridi_design_2022}, which combines multiple state outputs. First, the 8 least significant bits (LSB) are extracted from each of the four primary states, Eq. \ref{eq_8}.
 \begin{equation}
-Xb_{n} = XE_n\left[-24:-31 \right]
+Xb_{n} = XE_n\left[-14:-21 \right]
 \label{eq_8}
 \end{equation}
 
@@ -498,6 +499,7 @@ var_{0,i} &= var_{b,i}+2^{-21}K_i
 
 \begin{table}[h]
 \centering
+\footnotesize
 \begin{tblr}{
   colspec = {ccc},
   row{1} = {font=\bfseries},
@@ -513,7 +515,10 @@ $U$ & $(0.1, 0.1)^T$ & $(K_{12}, K_{13})^T$ \\
 \label{tab_2}
 \end{table}
 \subsection{PRNG architecture}
-The overall architecture and interconnections of the various modules within the PRNG are schematically represented in Figure \ref{fig_9}. This diagram illustrates how the complementary module (mod comp) generates perturbations on the parameters of the primary module (mod prim). The primary and complementary modules then transmit their respective data to the post-processing module (mod postp), which is responsible for synthesizing the final output of the PRNG. The entire sequence generation process is shown by the steps outlined in Algorithm \ref{alg_1}.
+The overall architecture and interconnections of the various modules within the PRNG are schematically represented in Figure \ref{fig_9}. This diagram illustrates how the complementary module (mod comp) generates perturbations on the parameters of the primary module (mod prim). The primary and complementary modules then transmit their respective data to the post-processing module (mod postp), which is responsible for synthesizing the final output of the PRNG.
+{\color{red}
+To ensure the necessary buffer capacity for the system, the primary module was subdivided into six processing stages. This architectural choice was implemented to enhance pipeline efficiency and prevent data bottlenecks.}
+The entire sequence generation process is shown by the steps outlined in Algorithm \ref{alg_1}.
 \begin{figure} [!ht]
 \centering
 \includegraphics[width=0.8\textwidth]{Figuras IEEE/Diagrama PRNG Articulo(3).png}
@@ -542,7 +547,7 @@ The overall architecture and interconnections of the various modules within the 
     \State $XE_{n+1} \gets \text{4D-EHC4S}(XE_n, ParX_n)$
     \State $ParX_{n+1} \gets  ParX_{0} + 2^{-13}Pert(U_n)$
     \Comment{Parametric perturbation}
-    \State $Xb_n \gets XE_{n}[-24:-31]$
+    \State $Xb_n \gets XE_{n}[-14:-21]$
     \Comment{Selector}
     \State $SEL_n \gets u\left[-20:-21\right]$
     \State $SIG_{n,0} \gets Xb_{n,SEL \% 4}$
@@ -580,10 +585,11 @@ KEY C & {$AABBCCDDEEFF0011\_2233445566778899\_$ \\ $AABBCCDDEEFF0011\_22334455_{
 \section{Eficiency and security analysis}\label{sec_5}
 This section shows the results of several chaos and randomness tests to ensure suitability for cryptographic use. 
 \subsection{Resources used}
-An analysis of the computational resources consumed by the PRNG confirms that the PRNG implemented is not resource intensive and will not limit other functionalities within the platform. Table \ref{tab_3} presents a comprehensive overview of the resources used by the PRNG. The PRNG exhibits minimal resource consumption, with most categories utilizing less than $3\%$ of the available resources. In particular, multipliers account for the highest proportion of usage, at $23\%$, showing their role in the arithmetic operations of the system. In this configuration, the system was able to achieve a throughput of 400 Mb/s using the fpga 50 MHz clock.
+An analysis of the computational resources consumed by the PRNG confirms that the PRNG implemented is not resource intensive and will not limit other functionalities within the platform. Table \ref{tab_3} presents a comprehensive overview of the resources used by the PRNG. The PRNG exhibits minimal resource consumption, with most categories utilizing less than $3\%$ of the available resources. In particular, multipliers account for the highest proportion of usage, at $23\%$, showing their role in the arithmetic operations of the system. In this configuration, the system was able to achieve a throughput of 66.6 Mb/s using the FPGA's 50 MHz clock.
 
 \begin{table}[h]
 \centering
+\footnotesize
 \begin{tblr}{
   colspec = {cccc},
   row{1} = {font=\bfseries},
@@ -605,6 +611,11 @@ Total PLLs & $0$ & $4$ & $0\%$ \\
 \subsection{Key space}
 To effectively resist brute force attacks, a PRNG's key space must be sufficiently large. The proposed PRNG uses a 224-bit key, providing a key space of $2^{224}$ possible keys. This exceeds the NIST recommended minimum key space of $2^{128}$ \cite{barker_transitioning_2019}, providing a robust defense against brute-force cryptanalysis.
 
+{
+  \color{red} 
+  \subsection{Time analysis}
+  ....
+}
 \subsection{Key sensitivity}
 A fundamental characteristic of a cryptographically secure PRNG is its extreme sensitivity to changes in its input key. Even the slightest alteration in the key must result in drastically different output sequences. This property demonstrates a high degree of unpredictability in the PRNG's output and proves resistance to exploitation of underlying patterns.
 
@@ -656,6 +667,7 @@ For a specific test to pass, its calculated p-value must be greater or equal tha
 In this study, 100 sequences of $10^6$ bits were generated using distinct random keys for analysis. As summarized in Table \ref{tab_5} (where an asterisk (*) denotes the average for tests involving multiple subtests), all tests within the NIST 800-22 suite produced a passing proportion. This comprehensive success demonstrates the suitability of the proposed PRNG for cryptographic applications.
 \begin{table}[h]
 \centering
+\footnotesize
 \begin{tblr}{
   colspec = {cccc},
   row{1} = {font=\bfseries},
@@ -688,6 +700,7 @@ Each battery contains many statistical tests, and each test produces a p‑value
 Using the same sequences as in the previous test, the Rabbit, Alphabit, and BlockAlphabit batteries were applied to evaluate the PRNG. Table \ref{tab_5.1} shows that the proposed PRNG passes all statistical tests.
 \begin{table}[h]
 \centering
+\footnotesize
 \begin{tblr}{
   colspec = {cccc},
   row{1} = {font=\bfseries},
@@ -702,10 +715,39 @@ BlockAlphabit & $102/102$ \\
 \label{tab_5.1}
 \end{table}
 
+{
+  \color{red}
+\subsection{NIST 800-90B}
+tecnm
+\begin{table}[h]
+\centering
+\footnotesize
+\begin{tblr}{
+  colspec = {cccccc},
+  row{1} = {font=\bfseries},
+  hline{1,2,Z} = {solid},
+}
+Metric & Sequence1 & Sequence2 & Sequence3 & Sequence4 & Sequence5 \\
+MCV & $0.99823$ & $0.99813$ & $0.99857$ & $0.99846$ & $0.99799$ \\
+Collision & $0.95134$ & $0.94255$ & $0.94387$ & $0.94349$ & $0.93882$ \\
+Markov   & $0.99949$ & $0.99909$ & $0.99958$ & $0.99940$ & $0.99842$ \\
+Compression    & $0.88530$ & $0.90498$ & $0.89352$ & $0.96242$ & $0.88918$ \\
+T-tuple & $0.93356$ & $0.93149$ & $0.93356$ & $0.93570$ & $0.92749$ \\
+LRS  & $0.99799$ & $0.99415$ & $0.99557$ & $0.99789$ & $0.99514$ \\
+Multi-MCW  & $0.99869$ & $0.99913$ & $0.99854$ & $0.99929$ & $0.99821$ \\
+Lag & $0.99821$ & $0.99830$ & $0.99887$ & $0.99876$ & $0.99923$ \\
+Multi-MMC  & $0.99866$ & $0.99867$ & $0.99764$ & $0.99850$ & $0.99869$ \\
+LZ78Y  & $0.99893$ & $0.99928$ & $0.99894$ & $0.99855$ & $0.99894$ \\
+\end{tblr}
+\caption{PRNG NIST 800-90B results.}
+\label{tab_nist_90B}
+\end{table}
+}
 \subsection{Comparison with literature}\label{sec6}
 Numerous prior works have explored the development and application of PRNGs on various platforms. A comparative overview between these existing works and the proposed PRNG is presented in Table \ref{tab_6}.
 \begin{table*}[!t]
 \centering
+\footnotesize
 \begin{tblr}{
   colspec = {*{7}{X[c]}},  % X columns distribute available space
 width = \linewidth,  
