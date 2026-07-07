@@ -12,7 +12,7 @@
 \vspace{0.8cm} % Espacio
 
 \begin{flushright}
-May 22, 2026
+Jul 13, 2026
 \end{flushright}
 
 \vspace{0.5cm} % Espacio
@@ -29,7 +29,7 @@ Tsinghua University, Beijing, China \\
 
 \begin{flushright}
  Ms. Ref. No.:  \textbf{VLSIJ-D-26-00858} \\
-Title: AHybrid Hyperchaotic Pseudorandom Number Generator with Dynamic Perturbation
+Title: A Hybrid Hyperchaotic Pseudorandom Number Generator with Dynamic Perturbation
  \end{flushright} 
 
 
@@ -120,7 +120,7 @@ neural networks via memristor and application in IoT-based robot navigation
 \\
 \\
 \textbf{\textit{Response to this suggestion:}}
-\textit{Added future work in section 6 to better illustratefuture applications and integrations}
+\textit{Added future work in section 6 to better illustratefuture applications and integrations, such as the one mentioned}
 \\
 \\
 5. The
@@ -136,7 +136,7 @@ abbreviations should give their full name when it first appears in the text.
 \\
 \\
 \textbf{\textit{Response to this suggestion:}}
-\textit{XXX}
+\textit{Added abbreviations of such concepts as PRNG and FPGA in the abstract}
 \\
 \\
 
@@ -171,7 +171,10 @@ mechanism
 \\
 \\
 \textbf{\textit{Response to this suggestion:}}
-\textit{The recommended works were reviewed and added to the Introduction. Please see the references [10], [11], [19] and [20].}
+\textit{
+The precision needed for the system is discussed in section 3.1.
+The dynamic bit-width adaptive mechanism is discussed in section 6
+}
 \\
 \\
 2. The post-processing architecture has timing bottlenecks and potential side-channel
@@ -179,7 +182,7 @@ leakage issues. It is recommended that the authors discuss this.
 \\
 \\ 
 \textbf{\textit{Response to this suggestion:}}
-\textit{The suggested articles for the selected plaintext attack analysis (CPA) were reviewed and added in references [37], [38] and [39]. The section 5.8 Chosen-plaintext attack analysis was added, please page 32.}
+\textit{Timing analysis has been shown in the work and discussion on the side-channel attacks is discussed on section 6}
 \\
 \\
 3. The security verification lacks key industrial standard tests. It is recommended to
@@ -187,77 +190,173 @@ supplement the NIST SP 800-90B entropy assessment and the FPGA physical layer an
 \\
 \\
 \textbf{\textit{Response to this suggestion:}}
-\textit{To justify the specific perturbation in the ELVM, the spectrum of the Lyapunov exponents of the proposed ELVM was obtained by varying the gamma parameter from 1 to 120,000. Figure 1 shows that when gamma approaches 65,935, the maximum Lyapunov exponent was obtained, which is 1.41518. A high Lyapunov exponent improves sensitivity to initial conditions. Therefore, the value 65,935 was used in Equation 2.}
+\textit{Section 5.9, added to show test}
 \\
 \\
-4. Summing multiplied pixel values to generate the SHA-256 message digest compromises collision resistance. Different images could easily produce the identical sum. A more secure scatter technique is highly recommended. 
+
+
+
+%******************* PAGE 4  ****************
+\newpage
+\begin{center}
+\section*{Response to comments of reviewers}
+\end{center}
+
+\vspace{0.5cm} % Espacio
+
+The authors are grateful to the anonymous reviewers for their valuable comments and suggestions, which highly insightful and enable us to greatly the quality of our manuscript.   
+
+\vspace{0.5cm} % Espacio
+
+\textbf{Responses to the comments of Reviewer \#4:} \\
+
+Reviewer' comments:
 \\
 \\
-\textbf{\textit{Response to this suggestion:}}
-\textit{The step 2 in Subsection 3.1 Encryption Process, we described the procedure to compute the input value for the SHA-256 function. The method was not based on a direct summation of pixel intensities. Instead, each pixel value is first altered according to its spatial position within the image, and afterward the total sum is calculated. As a consequence, images containing identical pixel values but arranged in different positions produce different resulting values. Please see page 14.}
+This manuscript presents a hybrid pseudorandom number generator combining
+continuous and discrete hyperchaotic systems. The design employs dynamic parametric
+perturbations and modular multiplication to mitigate digital degradation. The generator is
+implemented on an FPGA platform. The authors validate randomness using standard
+statistical suites like NIST and TestU01.
+This manuscript presents an interesting hardware design of a hybrid hyperchaotic
+generator, showing promising potential for cryptographic applications. The proposed
+dynamic perturbation mechanism effectively addresses digital degradation. However,
+several critical technical details require substantial improvement before publication.
+Specifically, the numerical discretization methodology, hardware performance evaluation
+lacking operating frequency data, and statistical testing protocols need deeper theoretical
+justification and more rigorous experimental validation to prove practical feasibility.
+Therefore, my recommendation is Major Revision. I strongly encourage the authors to
+carefully address the following detailed concerns.
 \\
 \\
-5. Table 5 claims a key space of 461 bits. This contradicts the described 184-bit secret key combined with the 256-bit message digest. Please recalculate and clarify these metrics. It is recommended to clearly describe the exact components that constitute the secret key, and then rigorously calculate the size of the key space. Please refer to State-dependent variable fractional-order hyperchaotic dynamics in a coupled quadratic map: a novel system for high-performance image protection; Multi-scroll hopfield neural network excited by memristive self-synapses and its application in image encryption for revisions.
-\\
-\\
-\textbf{\textit{Response to this suggestion:}}
-\textit{The suggested references were reviewed and considered in the Introduction section, please see references [10] and [19]. The key space was adjusted to 184 bits, according to the secret key of 46 hexadecimal values. This is discussed in the first paragraph of section 5.1, and Table 5 was corrected.}
-\\
-\\
-6. Averaging P-values in the NIST 800-22 test results shown in Table 1 is statistically incorrect. P-values follow a uniform distribution under the null hypothesis. Please report the proportion of passing sequences instead.
-\\
-\\
-\textbf{\textit{Response to this suggestion:}}
-\textit{Table 1 was changed to ``success proportions''.}
-\\
-\\
-7. The manuscript uses the same state variable notation for both continuous map outputs and the quantized integer keystream. Separating these notations will greatly improve the logical flow and mathematical precision.
-\\
-\\
-\textbf{\textit{Response to this suggestion:}}
-\textit{In section 2, the LV map with state variables $x$, $y$ was added, equation 1. The ELVM phase plane was changed, Figure 1. The state variables of the ELVM branching diagram were changed from $xEk$ to $X$ and from $yEk$ to $Y$, please see Figure 3.}
-\\
-\\
-8. The control parameter precision in Table 2 relies on simple multipliers of 0.01. This restricts the continuous parameter space. Consider expanding this to adequately prevent exhaustive parameter search attacks.
-\\
-\\
-\textbf{\textit{Response to this suggestion:}}
-\textit{An explanation of how to obtain the parameters and initial conditions has been added. The 15 decimal places were retained, which prevents exhaustive search attacks; see section 3 in page 13.}
-\\
-\\
-9. Relying on an RS-232 serial connection for sequence extraction creates a severe bottleneck. Please explain how this slow interface aligns with the high throughput claims presented in Table 13.
-\\
-\\
-\textbf{\textit{Response to this suggestion:}}
-\textit{The throughput calculation was added, which can reach up to 400 Mb/s, considering the maximum frequency of 50 MHz and the algorithm's 8-bit data output. Please see subsection 5.13 Throughput in page 39. Consequently, Table 13 was removed.}
-\\
-\\
-10. The UACI and NPCR results in Table 6 lack variance analysis. Including standard deviations across multiple different image samples will strengthen your claims of resistance to differential attacks.
-\\
-\\
-\textbf{\textit{Response to this suggestion:}}
-\textit{We added comments about the standard deviation of both, the original and the encrypted images and values were added to Table 6, please see page 24 in subsection 5.2 Secret key sensitivity.}
-\\
-\\
-11. Table 7 shows large standard deviations for the histogram variances (last line). This implies uneven pixel distribution. Please explain this discrepancy against your claims of near-ideal uniformity.
+1. The abstract should be refined to concisely address the research background, identify
+the gap, state the motivation, outline the study’s content, summarize key findings, and
+highlight the significance of the work. Please refer to Exploiting robust quadratic
+polynomial hyperchaotic map and pixel fusion strategy for efficient image encryption and
+Novel approach to time series forecasting based on memristive Hopfield Neural Network
+with hidden heterogeneous and homogeneous extreme multistability for improvements.
 \\
 \\
 \textbf{\textit{Response to this suggestion:}}
-\textit{A paragraph explaining the proportion of the standard deviation was added in page 27.}
+\textit{Abstract changed to better identify highlights}
 \\
 \\
-12. For an FPGA-focused manuscript, the hardware resource consumption analysis is notably absent. Please include exact logic element utilization, register counts, and dynamic power consumption details to prove hardware efficiency.
+2. I think the keyword list should be adjusted. Generally, we should select 5-7 precise
+keywords that accurately represent the study’s central problem, technical approach, and
+principal results, thereby optimizing indexing, discoverability, and relevance to the
+journal's scope. Please refer to Lossless frequency-domain image encryption via 3D
+exponential hyper-chaotic map and integer lifting wavelet transform and Extreme
+multistability in discrete memristive neuron maps and implications for dual-field
+applications for revisions.
+\\
+\\ 
+\textbf{\textit{Response to this suggestion:}}
+\textit{More precise keywords were used}
+\\
+\\
+3. The introduction section lacks some essential elements. For example, the authors
+should provide a brief introduction, analysis, and discussion of chaotic system
+construction and its extensive applications, such as Exploiting robust quadratic
+polynomial hyperchaotic map and pixel fusion strategy for efficient image encryption,
+Novel approach to time series forecasting based on memristive Hopfield Neural Network
+with hidden heterogeneous and homogeneous extreme multistability, Extreme
+multistability in discrete memristive neuron maps and implications for dual-field
+applications, and Multi-scroll hopfield neural network excited by memristive selfsynapses and its application in image encryption
 \\
 \\
 \textbf{\textit{Response to this suggestion:}}
-\textit{Subsection 5.14 ``Resource utilization'' is included. The table 13 of the resources used was added, please see page 40.}
+\textit{In section 2, discussion of modern PRNG approaches has been added}
 \\
 \\
-13. The number of references is insufficient, and there are also some formatting issues. Moreover, it is recommended to enrich the reference list by providing more comprehensive introductions, analyses, discussions, and comparisons of the latest relevant works, particularly those related to the construction of chaotic systems and their cryptographic applications, as well as cryptanalysis. This would help highlight the comprehensiveness, cutting-edge nature, and superiority of your work.
+4. In Section 3, using the Euler method with a tiny step size introduces correlation
+between consecutive states. Please reevaluate the discretization strategy or adopt
+advanced solvers to ensure the generated sequences maintain true unpredictability.
 \\
 \\
 \textbf{\textit{Response to this suggestion:}}
-\textit{Several works were reviewed, including the recommended references. Information was added to the Introduction section and the Chosen-plaintext attacks subsection, see pages 3-5 and pages 32-35.}
+\textit{In Section 3.1, provided a more thorough explanation of the Euler method, including its advantages and disadvantages}
+\\
+\\
+5. In Section 3, implementing a large constant modular multiplication introduces
+computational overhead. I suggest optimizing the multiplier block logic and providing a
+detailed analysis of its practical feasibility and delay costs on the FPGA.
+\\
+\\
+\textbf{\textit{Response to this suggestion:}}
+\textit{Section 3.4 added to explain the selection for the various paramters}
+\\
+\\
+6. In Section 3, the perturbation mechanism modifies chaotic parameters dynamically.
+Please provide a rigorous mathematical derivation explaining how these specific
+parameter values guarantee stable global chaotic behavior without collapsing into
+periodic windows during continuous disruption.
+\\
+\\
+\textbf{\textit{Response to this suggestion:}}
+\textit{XXX}
+\\
+\\
+7. In Section 4, the hardware evaluation omits operating frequency data in the FPGA
+results. Please report the maximum clock frequency and timing analysis to allow an
+independent verification of your hardware performance claims.
+\\
+\\
+\textbf{\textit{Response to this suggestion:}}
+\textit{Section 5.3 added to show the timing analysis}
+\\
+\\
+8. In Section 4, the initial key integration relies on static fractional scaling. To prevent
+linear relationships between key bits and initial states, I recommend introducing a robust,
+nonlinear key scheduling algorithm to enhance cryptographic security.
+\\
+\\
+\textbf{\textit{Response to this suggestion:}}
+\textit{In section 6, added the recommendation for future work}
+\\
+\\
+9.  In Section 5, the resource consumption table lists component counts but excludes
+latency metrics. Please calculate and present the critical path delay to demonstrate the
+true hardware efficiency and practical engineering depth of your design.
+\\
+\\
+\textbf{\textit{Response to this suggestion:}}
+\textit{Section 5.3 added to show the timing analysis}
+\\
+\\
+10. In Section 5, the key sensitivity analysis evaluates only a single pair of test keys.
+Please compute the average Hamming distance across more random key pairs to establish
+a statistically meaningful cryptographic evaluation
+\\
+\\
+\textbf{\textit{Response to this suggestion:}}
+\textit{Section 5.4 has been updated to address this concern using 100 keys}
+\\
+\\
+11. In Section 5, the uniformity histogram utilizes a relatively small sample size. To rule
+out periodic biases and establish long term statistical uniformity, please significantly
+increase the dataset volume to more generated iterations.
+\\
+\\
+\textbf{\textit{Response to this suggestion:}}
+\textit{Section 5.5 has been updated, the dataset has been increased with 25.6 Million iterations}
+\\
+\\
+12. In Section 5, calculating the largest Lyapunov exponent directly from the discrete
+generator output stream is theoretically problematic. I advise computing this metric
+exclusively from the continuous phase space trajectory to reflect the true dynamics.
+\\
+\\
+\textbf{\textit{Response to this suggestion:}}
+\textit{Section 3.2 has been updated with the Lyapunov exponent of the enhanced system}
+\\
+\\
+13. Please consider updating the reference list to include more recent studies on chaotic
+systems and their diverse applications. This will help highlight the comprehensiveness,
+novelty, and superiority of your work.
+\\
+\\
+\textbf{\textit{Response to this suggestion:}}
+\textit{Recent studies and research have added to section 2}
 \\
 \\
 \end{document}
