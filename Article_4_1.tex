@@ -242,7 +242,9 @@ The systems chosen in this work are 4D continuous hyperchaotic system (4D-HC4S),
 This system was selected because its hyperchaotic behavior provides richer dynamical complexity than low-dimensional chaotic maps, reaching a max LE of 3.5213 while its four states enable multiple independent output streams and a substantially larger, more distributed key space through their initial conditions and system parameters. 
 
 The PRNG's complementary module uses a 2D hyperchaotic map with amplitude control (2D-HCAC) \cite{zhou_2d_2021}.
-Similarly to the previous system, 2D-HCAC has been choosen for this work due to its higher than averga Lyapunov exponent for its dimensionality, at 0.1905. 
+Similarly to the previous system, 2D-HCAC has been choosen for this work due to its higher than average Lyapunov exponent for its dimensionality, at 0.1905. 
+
+To significantly increase the cryptographic key space of the overall PRNG, the proposed design uses multi-dimensional chaotic systems with various state variables and control parameters. In this framework, the initial conditions and the system parameters are mapped directly to the secret key, resulting in a larger key space that enhances the algorithm's overall cryptographic strength.
 
 Introducing higher dimensional systems can increase the system’s randomness, but it also raises computational overhead, which may render the design inefficient. The trade-off between added randomness and computational cost should be carefully considered when selecting the system dimensionality. Additionally, all nonlinearities in the system are polynomial, which eliminates the need to emulate transcendental functions or specialized hardware components. This simplifies implementation and while maintianing high chaotic behavior.
 }
@@ -332,12 +334,16 @@ To accurately capture the hyperchaotic behavior,without causing chaotic degradat
 %% Use \subsection commands to start a subsection.
 
 {\color{red}
-This will become more important in a moment but the but the system will be discretized into fixed-point arithmetic, thus it is important to note that only after 12 bits of precision does the system maintains hyperchaotic behavior, as can be seen in \ref{fig_4D-HC4S_pres}. Where lower precision makes the system step out of hyperchaos by its second LE.
+This will become more important in a moment but the but the system will be discretized into fixed-point arithmetic, thus it is important to note that only after 12 bits of precision does the system maintains hyperchaotic behavior, as can be seen in figure \ref{fig_4D-HC4S_pres}. Where lower precision makes the system step out of hyperchaos by its second LE.
 }
 \begin{figure}[!t]
 \centering
 \includegraphics[width=0.73\textwidth]{Figuras IEEE/HC4S_4D_Precision.pdf}
-\caption{4D-HCAC second LE as a sweep of fractional bits of precision.\label{fig_4D-HC4S_pres}}
+{\color{red}
+\caption{
+  4D-HCAC second LE as a sweep of fractional bits of Precision.
+  \label{fig_4D-HC4S_pres}}
+}
 \end{figure}
 
 \subsection{Proposed enhanced 4D hyperchaotic four-scroll system}
@@ -361,9 +367,9 @@ This performance gain is a direct result of employing modular multiplication, st
 The Lyapunov exponents of the discretized system, in nats/iteration, are given by Eq. \ref{eq_EHC4S}.
 \begin{align}
 \label{eq_EHC4S}
-LE &\approx \ln(multiplier) + LE({\text{Eu-4D}})_{cont} \times h
+LE({\text{4D-EHC4S}}) &\approx \ln(multiplier) + LE({\text{Eu-4D}})_{cont} \times h
 \end{align}
-Thus the all the Lyapunov exponets $LE \approx 9.4114$ in this case. While a higher value of the multiplier or parameters may seem a much better approach, the higher computational cost of using the multipliers needs to be taken into account, more discussion on the parameters selected is given i a future section.
+Thus the all the Lyapunov exponets $LE \approx 9.4114$ in this case. While a higher value of the multiplier or parameters may seem a much better approach, the higher computational cost of using the multipliers needs to be taken into account, more discussion on the parameters selected is given in a future section.
 }
 
 \begin{figure*}[!t]
