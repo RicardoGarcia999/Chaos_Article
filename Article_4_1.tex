@@ -448,7 +448,7 @@ The results can be seen in figure \ref{fig_multi}.
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.72\textwidth]{Figuras IEEE/Multi_histo_chi.pdf}
-\caption{Multiplicator sweep.\label{fig_multi}}
+\caption{Chi-Square results for multiplicator sweep.\label{fig_multi}}
 \end{figure}
 
 
@@ -688,7 +688,7 @@ $KEY_\text{ref}$ & {$0123456789ABCDEF\_0123456789ABCDEF\_$ \\ $0123456789ABCDEF\
 \end{table}
 
 \subsection{Uniformity}
-A robust PRNG is mandated to produce output sequences that closely approximate a uniform distribution. Any inherent bias or tendencies in the generated values directly compromises the PRNG's security by increasing its vulnerability to cryptanalysis.a
+A robust PRNG is mandated to produce output sequences that closely approximate a uniform distribution. Any inherent bias or tendencies in the generated values directly compromises the PRNG's security by increasing its vulnerability to cryptanalysis.
 {\color{red}
 Output uniformity was evaluated using a histogram of 25,600,000 iterations of 8-bit values generated using $KEY_\text{ref}$ and chi-square test. The frequency of each value should ideally be $1 \times 10^{5}$ for a uniform distribution. As depicted in Figure \ref{fig_11}, the observed frequencies align closely with this ideal.
 }
