@@ -1,4 +1,4 @@
-%% 
+%%
 %% Copyright 2007-2025 Elsevier Ltd
 %% 
 %% This file is part of the 'Elsarticle Bundle'.
@@ -133,7 +133,7 @@
 \begin{abstract}
 %% Text of abstract
 {\color{red}
-Chaotic systems offer strong potential as foundations for pseudorandom number generators (PRNG) in cryptographic applications. However, hardware implementations suffer from dynamical degradation, where finite-precision arithmetic collapses chaotic trajectories into short, predictable periodic orbits. Existing countermeasures rely on high-dimensional systems, increasing costs without resolving the issue. A novel PRNG is proposed implemented on a Field-Programmable Gate Array (FPGA) that integrates a 4D continuous hyperchaotic system with a 2D discrete map. The core innovation is a dynamic parametric perturbation mechanism, where the 2D map modulates the 4D system's parameters to sustain complex dynamics under finite precision. Modular multiplication and multiplexer-based XOR post-processing further enhance unpredictability. The design achieves high key sensitivity, uniform output distribution, and passes both NIST 800-22 and TestU01 test suites with low resource utilization. These results validate it as a secure, efficient hardware-based PRNG for secure communications, image encryption, and other cryptographic applications.
+Chaotic systems offer strong potential as foundations for pseudorandom number generators (PRNG) in cryptographic applications. However, hardware implementations suffer from dynamical degradation, where finite-precision arithmetic collapses chaotic trajectories into short, predictable periodic orbits. Existing countermeasures rely on high-dimensional systems, increasing costs without resolving the issue. A novel PRNG is proposed implemented on a Field-Programmable Gate Array (FPGA) that integrates a 4D continuous hyperchaotic system with a 2D discrete map. The core innovation is a dynamic parametric perturbation mechanism, where the 2D map modulates the 4D system's parameters to sustain complex dynamics under finite precision. Modular multiplication and multiplexer-based XOR post-processing further enhance unpredictability. The design achieves high key sensitivity, uniform output distribution, and passes NIST 800-22, NIST 800-90B and TestU01 test suites with low resource utilization. These results validate it as a secure, efficient hardware-based PRNG for secure communications, image encryption, and other cryptographic applications.
 }
 \end{abstract}
 
@@ -179,6 +179,10 @@ Hybrid hyperchaotic system  \sep Pseudorandom number generation \sep Field progr
 
 
 Chaotic dynamical systems serve as a strong basis for Pseudorandom Number Generator (PRNG) designs. Despite being deterministic, these systems exhibit extreme sensitivity to initial conditions and long-term unpredictability, which approximates the statistical randomness needed for cryptography. Whereas a single positive Lyapunov exponent (LE) indicates chaos in a system, this complexity is further enhanced in hyperchaotic systems, which are characterized by two or more positive LEs. This makes them particularly attractive for high-security PRNGs \cite{li_high-performance_2024,nguyen_designing_2022,al-azzawi_new_2023}. 
+
+{\color{red}
+Lyapunov exponents quantify the exponential divergence of infinitesimally close trajectories. Typically expressed in nats per second for continuous systems and nats per iteration for discrete systems, they represent the rate of information loss and serve as a measure of the system's entropy.
+}
 
 While chaotic systems offer theoretically desirable properties, they are rarely utilized in practice due to implementation challenges. Real world implementations suffer from issues such as chaotic degradation, periodic behavior, limited complexity, and slow speeds, which will be discussed later. To address these concerns, current research focuses on increasing chaotic complexity while maintaining an efficient design and high speed.
 
@@ -238,7 +242,7 @@ Finally, to further enhance encryption, modern schemes often use hybrid architec
 As previously mentioned, this work proposes a hybrid PRNG architecture that leverages the strengths of continuous and discrete hyperchaotic dynamics. The main generator is based on a 4D continuous hyperchaotic system, while a 2D discrete hyperchaotic system dynamically perturbs its parameters to enhance unpredictability and mitigate digital degradation. The system is further improved with modular multiplication and non-linear post-processing.
 
 {\color{red}
-The main system chosen in this work is a 4D continuous hyperchaotic system (4D-HC4S), proposed in \cite{vaidyanathan_new_2021}. 
+The main system chosen in this work is a 4D continuous hyperchaotic system (4D-HC4S), proposed in \cite{vaidyanathan_new_2021}.
 This system was selected because its hyperchaotic behavior provides richer dynamical complexity than low-dimensional chaotic maps, reaching a max LE of 3.5213 while its four states enable multiple independent output streams and a substantially larger, more distributed key space through their initial conditions and system parameters. 
 
 The PRNG's complementary module uses a 2D hyperchaotic map with amplitude control (2D-HCAC) \cite{zhou_2d_2021}.
@@ -363,7 +367,9 @@ XE_{n+1} &= \text{Mod}( {\text{Eu-4D}}(XE_n, ParX_n)) \\
 
 As can be seen in the bifurcation diagram for this new system Figure \ref{fig_3.5}, the system's sensitivity to initial conditions in its chaotic range is notably enhanced by the modular multiplication. 
 This performance gain is a direct result of employing modular multiplication, strengthening chaotic properties, and expanding the range of parameters where chaos occurs.
+
 {\color{red}
+Since the Lyapunov exponent is defined via the natural logarithm applied to the system's Jacobian, any constant multiplicative scaling applied to the state variables can be factored out and appears as an additive constant in the exponent's equation. Additionally, in the context of a discretized system, the discrete Lyapunov exponent is related to the continuous-time exponent by a scaling factor of the time step $h$.
 The Lyapunov exponents of the discretized system, in nats/iteration, are given by Eq. \ref{eq_EHC4S}.
 \begin{align}
 \label{eq_EHC4S}
@@ -453,6 +459,7 @@ The format of the variables for each system and their precision can be seen in T
 \begin{table}[h]
 \centering
 \footnotesize
+\caption{Systems variable formats.}\label{tab_1}
 \begin{tblr}{
   colspec = {c c c c},
   row{1} = {font=\bfseries},
@@ -465,7 +472,7 @@ $ParU$ & Q3.21 & $[-4, 4)$ & $2^{-21}$ \\
 $U$ & Q3.21 & $[-4, 4)$ & $2^{-21}$ \\
 $h$ & Q1.21 & $[-1, 1)$ & $2^{-21}$ \\
 \end{tblr}
-\caption{Systems variable formats.}\label{tab_1}
+
 \end{table}
 
 \subsection{Parametric perturbations}
@@ -537,6 +544,8 @@ var_{0,i} &= var_{b,i}+2^{-21}K_i
 \begin{table}[h]
 \centering
 \footnotesize
+\caption{Key bit allocation to system variables}
+\label{tab_2}
 \begin{tblr}{
   colspec = {ccc},
   row{1} = {font=\bfseries},
@@ -548,8 +557,7 @@ $XE$ & $(0.3, 0.2, 0.2, 0.3)^T$ & $(K_4, K_5,$ $K_6, K_7)^T$ \\
 $ParU$ & $(2.35, -1.5,$ $-1.5, -1.25)^T$ & $(K_8, K_9,$ $K_{10}, K_{11})^T$ \\
 $U$ & $(0.1, 0.1)^T$ & $(K_{12}, K_{13})^T$ \\
 \end{tblr}
-\caption{Key bit allocation to system variables}
-\label{tab_2}
+
 \end{table}
 \subsection{PRNG architecture}
 The overall architecture and interconnections of the various modules within the PRNG are schematically represented in Figure \ref{fig_9}. This diagram illustrates how the complementary module (mod comp) generates perturbations on the parameters of the primary module (mod prim). The primary and complementary modules then transmit their respective data to the post-processing module (mod postp), which is responsible for synthesizing the final output of the PRNG.
@@ -599,6 +607,8 @@ The entire sequence generation process is shown by the steps outlined in Algorit
 As mentioned before, the proposed PRNG is initialized with a 224-bit key to generate a pseudorandom sequence of integers in the range $[0,255]$. Each key determines a unique output sequence. Using the keys listed in Table \ref{tab_3.5}, the corresponding generator outputs are shown in Figure \ref{fig_9.5}.
 \begin{table}[!ht]
 \centering
+\caption{Keys for PRNG trajectory visualization.}
+\label{tab_3.5}
 \begin{tblr}{
   colspec = {cc},
   row{1} = {font=\bfseries},
@@ -609,8 +619,7 @@ KEY A & {$0000000000000000\_0000000000000000\_$ \\ $0000000000000000\_00000000_{
 KEY B & {$3C8D9A2B7F0E1654\_A9D8C7B6F5E43210\_$ \\ $B9A8D7C6F5E43210\_B9A8D7C6_{16}$} \\
 KEY C & {$AABBCCDDEEFF0011\_2233445566778899\_$ \\ $AABBCCDDEEFF0011\_22334455_{16}$} \\
 \end{tblr}
-\caption{Keys for PRNG trajectory visualization.}
-\label{tab_3.5}
+
 \end{table}
 
 \begin{figure}[!ht]
@@ -627,6 +636,8 @@ An analysis of the computational resources consumed by the PRNG confirms that th
 \begin{table}[h]
 \centering
 \footnotesize
+\caption{PRNG resource use on FPGA.}
+\label{tab_3}
 \begin{tblr}{
   colspec = {cccc},
   row{1} = {font=\bfseries},
@@ -641,8 +652,7 @@ Total memory bits & $28,672$ & $3,981,312$ & $<1\%$ \\
 Embedded Multiplier 9-bit elements & $124$ & $532$ & $23\%$ \\
 Total PLLs & $0$ & $4$ & $0\%$ \\
 \end{tblr}
-\caption{PRNG resource use on FPGA.}
-\label{tab_3}
+
 \end{table}
 
 \subsection{Key space}
@@ -665,6 +675,8 @@ The system was tested using 100 distinct keys, each distinct from a reference ke
 }
 \begin{table}[h]
 \centering
+\caption{Key reference for Hamming distance.}
+\label{tab_4}
 \begin{tblr}{
   colspec = {cc},
   row{1} = {font=\bfseries},
@@ -673,8 +685,6 @@ The system was tested using 100 distinct keys, each distinct from a reference ke
 Key & Value \\
 $KEY_\text{ref}$ & {$0123456789ABCDEF\_0123456789ABCDEF\_$ \\ $0123456789ABCDEF\_01234567_{16}$}
 \end{tblr}
-\caption{Key reference for Hamming distance.}
-\label{tab_4}
 \end{table}
 
 \subsection{Uniformity}
@@ -707,6 +717,8 @@ In this study, 100 sequences of $10^6$ bits were generated using distinct random
 \begin{table}[h]
 \centering
 \footnotesize
+\caption{PRNG NIST 800-22 results.}
+\label{tab_5}
 \begin{tblr}{
   colspec = {cccc},
   row{1} = {font=\bfseries},
@@ -729,8 +741,6 @@ Random Excursions Variant Test* & $0.467517$ & $0.99$ & Passed \\
 Serial Test*   & $0.064670$ & $1.00$ & Passed \\
 Linear Complexity Test    & $0.897763$ & $1.00$ & Passed \\
 \end{tblr}
-\caption{PRNG NIST 800-22 results.}
-\label{tab_5}
 \end{table}
 
 \subsection{TestU01}
@@ -740,6 +750,8 @@ Using the same sequences as in the previous test, the Rabbit, Alphabit, and Bloc
 \begin{table}[h]
 \centering
 \footnotesize
+\caption{PRNG TestU01 results.}
+\label{tab_5.1}
 \begin{tblr}{
   colspec = {cccc},
   row{1} = {font=\bfseries},
@@ -750,15 +762,14 @@ Rabbit & $40/40$ \\
 Alphabit & $17/17$ \\
 BlockAlphabit & $102/102$ \\
 \end{tblr}
-\caption{PRNG TestU01 results.}
-\label{tab_5.1}
+
 \end{table}
 
 {
   \color{red}
 \subsection{NIST 800-90B}
 
-While a non standard test to PRNGs and more commonly associated with True random number generators, the test NIST 800-90B can be used to assess randomness. NIST 800-90B focuses on estimating a conservative lower bound on the entropy of potentially non-IID sources. Consequently, we employ SP 800-90B as a complementary, deployment-oriented metric that is more directly tied to underlying entropy quality than p-value batteries alone. 
+While a non standard test to PRNGs and more commonly associated with True random number generators, the test NIST 800-90B can be used to assess randomness \cite{turan_recommendation_2018}. NIST 800-90B focuses on estimating a conservative lower bound on the entropy of potentially non-IID sources. Consequently, we employ SP 800-90B as a complementary, deployment-oriented metric that is more directly tied to underlying entropy quality than p-value batteries alone. 
 
 Following the 800-90B guidelines, a dataset of $1 \times 10^6$ bits was collected from the FPGA implementation. For secure deployment, we adopt the standard practical criterion of $H_{min} > 0.79$ bits per symbol. As summarized in Table \ref{tab_nist_90B}, all generated sequences exceed this threshold. 
 
@@ -767,6 +778,8 @@ The estimator breakdown reveals a consistent convergence across different models
 \begin{table}[h]
 \centering
 \footnotesize
+\caption{PRNG NIST 800-90B results.}
+\label{tab_nist_90B}
 \begin{tblr}{
   colspec = {cccccc},
   row{1} = {font=\bfseries},
@@ -784,8 +797,6 @@ Lag & $0.99821$ & $0.99830$ & $0.99887$ & $0.99876$ & $0.99923$ \\
 Multi-MMC  & $0.99866$ & $0.99867$ & $0.99764$ & $0.99850$ & $0.99869$ \\
 LZ78Y  & $0.99893$ & $0.99928$ & $0.99894$ & $0.99855$ & $0.99894$ \\
 \end{tblr}
-\caption{PRNG NIST 800-90B results.}
-\label{tab_nist_90B}
 \end{table}
 }
 \subsection{Comparison with literature}\label{sec6}
@@ -793,6 +804,8 @@ Numerous prior works have explored the development and application of PRNGs on v
 \begin{table*}[!t]
 \centering
 \footnotesize
+\caption{Comparisons with similar schemes in literature.}
+\label{tab_6}
 \begin{tblr}{
   colspec = {*{7}{X[c]}},  % X columns distribute available space
 width = \linewidth,  
@@ -821,8 +834,6 @@ Proposed PRNG & Hybrid & \checkmark & $224$ & \checkmark & 66.6 & EP4CE115 \\
 \cite{yu_design_2021} & HNN & \checkmark & $512$ & \checkmark & 16.2 & Zynq-7Z020 \\
 
 \end{tblr}
-\caption{Comparisons with similar schemes in literature.}
-\label{tab_6}
 \end{table*}
 The data presented indicate that the proposed PRNG achieves results comparable to other established systems in the literature. However, it should be noted that the throughput of the proposed system is overall lower than that of most other implementations. 
 
@@ -1010,7 +1021,7 @@ F. Yu, X. Wang, Y. Xiao, Y. He, W. Yao, S. Cai, J. Jin, 2026. Extreme multistabi
 F. Yu, R. Guo, M. Zheng, W. Yao, D. Zhang, S. Cai, 2026. Novel approach to time series forecasting based on memristive Hopfield Neural Network with hidden heterogeneous and homogeneous extreme multistability. Chaos Solitons Fractals. 210, 118626. https://doi.org/10.1016/j.chaos.2026.118626.
 
 \bibitem{meranza_novel_2026}
-M.A. Meranza-Castillón, C. Cruz-Hernández, R. López-Gutiérrez, S. González-López, M. Murillo-Escobar, 2026. A novel image cryptosystem for FPGA based on 8-bit pseudorandom number generator with enhanced chaos and SHA-256. Integration. 110, 102779. https://doi.org/10.1016/j.vlsi.2026.102779.
+M.O. Meranza-Castillón, C. Cruz-Hernández, R.M. López-Gutiérrez, S. González-López, M.A. Murillo-Escobar, 2026. A novel image cryptosystem for FPGA based on 8-bit pseudorandom number generator with enhanced chaos and SHA-256. Integration. 110, 102779. https://doi.org/10.1016/j.vlsi.2026.102779.
 
 \bibitem{lai_family_2025}
 Q. Lai, Y. Liu, 2025. A family of image encryption schemes based on hyperchaotic system and cellular automata neighborhood. Sci. China Technol. Sci. 68, 1320401. https://doi.org/10.1007/s11431-024-2678-7.
@@ -1047,6 +1058,9 @@ M.T. Rosenstein, J.J. Collins, C.J. De Luca, A practical method for calculating 
 
 \bibitem{bassham_statistical_2010}
 L.E. Bassham, A.L. Rukhin, J. Soto, J.R. Nechvatal, M.E. Smid, S.D. Leigh, et al., A statistical test suite for random and pseudorandom number generators for cryptographic applications, National Institute of Standards and Technology, Gaithersburg, MD, 2010. NIST SP 800-22 Rev. 1a.
+
+\bibitem{turan_recommendation_2018}
+M.S. Turan, E. Barker, J. Kelsey, K.A. McKay, M.L. Baish, M. Boyle, Recommendation for the entropy sources used for random bit generation, National Institute of Standards and Technology, Gaithersburg, MD, 2018. NIST SP 800-90B. https://doi.org/10.6028/nist.sp.800-90b.
 
 \bibitem{garipcan_hardware_2021}
 A.M. Garipcan, E. Erdem, Hardware implementation of chaotic zigzag map based bitwise dynamical pseudo random number generator on field-programmable gate array, Inform. MIDEM 51 (2021) 243–254. https://doi.org/10.33180/InfMIDEM2020.402.
