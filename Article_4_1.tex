@@ -133,7 +133,7 @@
 \begin{abstract}
 %% Text of abstract
 {\color{red}
-Chaotic systems offer strong potential as foundations for pseudorandom number generators (PRNGs) in cryptographic applications. However, hardware implementations suffer from dynamical degradation, where finite-precision arithmetic collapses chaotic trajectories into short, predictable periodic orbits. Existing countermeasures rely on high-dimensional systems, increasing costs without resolving the issue. We propose a novel PRNG implemented on a Field-Programmable Gate Array (FPGA) that integrates a 4D continuous hyperchaotic system with a 2D discrete map. The core innovation is a dynamic parametric perturbation mechanism, where the 2D map modulates the 4D system's parameters to sustain complex dynamics under finite precision. Modular multiplication and multiplexer-based XOR post-processing further enhance unpredictability. The design achieves high key sensitivity, uniform output distribution, and passes both NIST 800-22 and TestU01 test suites with low resource utilization. These results validate it as a secure, efficient hardware-based PRNG for secure communications, image encryption, and other cryptographic applications.
+Chaotic systems offer strong potential as foundations for pseudorandom number generators (PRNG) in cryptographic applications. However, hardware implementations suffer from dynamical degradation, where finite-precision arithmetic collapses chaotic trajectories into short, predictable periodic orbits. Existing countermeasures rely on high-dimensional systems, increasing costs without resolving the issue. A novel PRNG is proposed implemented on a Field-Programmable Gate Array (FPGA) that integrates a 4D continuous hyperchaotic system with a 2D discrete map. The core innovation is a dynamic parametric perturbation mechanism, where the 2D map modulates the 4D system's parameters to sustain complex dynamics under finite precision. Modular multiplication and multiplexer-based XOR post-processing further enhance unpredictability. The design achieves high key sensitivity, uniform output distribution, and passes both NIST 800-22 and TestU01 test suites with low resource utilization. These results validate it as a secure, efficient hardware-based PRNG for secure communications, image encryption, and other cryptographic applications.
 }
 \end{abstract}
 
@@ -180,9 +180,9 @@ Hybrid hyperchaotic system  \sep Pseudorandom number generation \sep Field progr
 
 Chaotic dynamical systems serve as a strong basis for Pseudorandom Number Generator (PRNG) designs. Despite being deterministic, these systems exhibit extreme sensitivity to initial conditions and long-term unpredictability, which approximates the statistical randomness needed for cryptography. Whereas a single positive Lyapunov exponent (LE) indicates chaos in a system, this complexity is further enhanced in hyperchaotic systems, which are characterized by two or more positive LEs. This makes them particularly attractive for high-security PRNGs \cite{li_high-performance_2024,nguyen_designing_2022,al-azzawi_new_2023}. 
 
-While chaotic systems offer theoretically desirable properties, they are rarely utilized in practice due to implementation challenges. Real world implementations suffer from issues such as chaotic degradation, periodic behavior, limited complexity, and slow speeds, that will be discussed later. To address these concerns, current research focuses on increasing chaotic complexity while maintaining an efficient design and high speed.
+While chaotic systems offer theoretically desirable properties, they are rarely utilized in practice due to implementation challenges. Real world implementations suffer from issues such as chaotic degradation, periodic behavior, limited complexity, and slow speeds, which will be discussed later. To address these concerns, current research focuses on increasing chaotic complexity while maintaining an efficient design and high speed.
 
-To demonstrate efficiency and speed, these PRNGs are often implemented in hardware, such as Field-Programmable Gate Array (FPGAs) or microcontrollers. However, directly analyzing random and secure behavior proves difficult. Instead, these systems require a statistical approach. Test suites such as NIST 800-22, DIEHARD, and TestU01 are used to assess high standards of unpredictability.
+To demonstrate efficiency and speed, these PRNGs are often implemented in hardware, such as Field-Programmable Gate Array (FPGA) or microcontrollers. However, directly analyzing random and secure behavior proves difficult. Instead, these systems require a statistical approach. Test suites such as NIST 800-22, DIEHARD, and TestU01 are used to assess high standards of unpredictability.
 
 Modern chaotic PRNG designs typically apply new mathematical frameworks to simple chaotic maps, enhancing randomness while preserving hardware efficiency \cite{luo_design_2024,sun_dynamic_2025}. Other approaches leverage techniques such as higher dimensions, memristors, and fractional dimensions \cite{moussa_ultra_2026,fraga_design_2025}.
 
@@ -204,7 +204,7 @@ The literature also describes a range of other applications for chaotic PRNGs, i
 \subsection{Contribution}
 Considering such motivation, this work proposes a hybrid PRNG that combines a 4D continuous hyperchaotic generator with a 2D discrete hyperchaotic map and a parameter perturbation module. The discrete module dynamically perturbs parameters of the continuous system to mitigate digital degradation; modular multiplication and nonlinear post-processing further enhance unpredictability. The design is implemented in fixed-point VHDL on a Terasic DE2-115 FPGA and validated numerically and empirically via histogram uniformity assessments and the NIST 800-22 randomness test suite. The results demonstrate high-quality pseudorandom behavior suitable for cryptographic applications.
 
-While the 4D continuous hyperchaotic system and the 2D discrete map utilized in this work have been previously established in the literature, the primary novelty of this paper lies in their integration and the surrounding architecture. Specifically, the main contributions are: A novel dynamic coupling scheme where the 2D map parametrically perturbs the 4D system to actively mitigate digital degradation; The introduction of modular multiplication to enhance the chaotic state space; and A robust, non-linear post-processing design using dynamic multiplexing and XOR operations to ensure high cryptographic security and uniformity.
+While the 4D continuous hyperchaotic system and the 2D discrete map utilized in this work have been previously established in the literature, the primary novelty of this paper lies in their integration and the surrounding architecture.
 
 The main contributions of the article are:
 \begin{itemize}[leftmargin=2.5em, itemsep=0.1em, label=\textbullet]
@@ -238,19 +238,19 @@ Finally, to further enhance encryption, modern schemes often use hybrid architec
 As previously mentioned, this work proposes a hybrid PRNG architecture that leverages the strengths of continuous and discrete hyperchaotic dynamics. The main generator is based on a 4D continuous hyperchaotic system, while a 2D discrete hyperchaotic system dynamically perturbs its parameters to enhance unpredictability and mitigate digital degradation. The system is further improved with modular multiplication and non-linear post-processing.
 
 {\color{red}
-The systems chosen in this work are 4D continuous hyperchaotic system (4D-HC4S), proposed in \cite{vaidyanathan_new_2021} and 
+The main system chosen in this work is a 4D continuous hyperchaotic system (4D-HC4S), proposed in \cite{vaidyanathan_new_2021}. 
 This system was selected because its hyperchaotic behavior provides richer dynamical complexity than low-dimensional chaotic maps, reaching a max LE of 3.5213 while its four states enable multiple independent output streams and a substantially larger, more distributed key space through their initial conditions and system parameters. 
 
 The PRNG's complementary module uses a 2D hyperchaotic map with amplitude control (2D-HCAC) \cite{zhou_2d_2021}.
-Similarly to the previous system, 2D-HCAC has been choosen for this work due to its higher than average Lyapunov exponent for its dimensionality, at 0.1905. 
+Similarly to the previous system, 2D-HCAC has been chosen for this work due to its higher than average Lyapunov exponent for its dimensionality, at 0.1905. 
 
 To significantly increase the cryptographic key space of the overall PRNG, the proposed design uses multi-dimensional chaotic systems with various state variables and control parameters. In this framework, the initial conditions and the system parameters are mapped directly to the secret key, resulting in a larger key space that enhances the algorithm's overall cryptographic strength.
 
-Introducing higher dimensional systems can increase the system’s randomness, but it also raises computational overhead, which may render the design inefficient. The trade-off between added randomness and computational cost should be carefully considered when selecting the system dimensionality. Additionally, all nonlinearities in the system are polynomial, which eliminates the need to emulate transcendental functions or specialized hardware components. This simplifies implementation and while maintianing high chaotic behavior.
+Introducing higher dimensional systems can increase the system’s randomness, but it also raises computational overhead, which may render the design inefficient. The trade-off between added randomness and computational cost should be carefully considered when selecting the system dimensionality. Additionally, all nonlinearities in the system are polynomial, which eliminates the need to emulate transcendental functions or specialized hardware components. This simplifies implementation while maintaining high chaotic behavior.
 }
 
 \subsection{4D hyperchaotic four-scroll system}
-The continuos system 4D-HC4S is described by the following set of differential equations Eq. \ref{eq_1} with the states $X(t)=(x(t), y(t), z(t), w(t))^T $ and parameters $ParX = (a_{4D},b_{4D},c_{4D},d_{4D})^T$. The representation of the system attractor is provided in Figure \ref{fig_1}.
+The continuous system 4D-HC4S is described by the following set of differential equations Eq. \ref{eq_1} with the states $X(t)=(x(t), y(t), z(t), w(t))^T $ and parameters $ParX = (a_{4D},b_{4D},c_{4D},d_{4D})^T$. The representation of the system attractor is provided in Figure \ref{fig_1}.
 \begin{equation}
 \begin{split}
 \frac{dX}{dt} &=
@@ -321,9 +321,9 @@ Complementing this, bifurcation diagrams, Figure \ref{fig_3}, visually illustrat
 \label{fig_3}
 \end{figure*}
 {\color{red}
-The continuous 4D system is discretized using the first-order Euler method. While advanced solvers, such as the fourth-order Runge-Kutta (RK4) method, offer superior numerical accuracy and reduce state correlation, they impose significant computational overhead and consume excessive hardware resources. In some instances less complicated numerical solutions have been found to have better chaotic response \cite{senouci_fpga_2017}. To maintain hardware efficiency, the Euler method was selected; however, it should be acknowledged that a small step size can introduce correlation between consecutive continuous states. 
+The continuous 4D system is discretized using the first-order Euler method. While advanced solvers, such as the fourth-order Runge-Kutta (RK4) method, offer superior numerical accuracy and reduce state correlation, they impose significant computational overhead and consume excessive hardware resources. In some instances, less complicated numerical solutions have been found to have better chaotic response \cite{senouci_fpga_2017}. To maintain hardware efficiency, the Euler method was selected; however, it should be acknowledged that a small step size can introduce correlation between consecutive continuous states. 
 }
-To accurately capture the hyperchaotic behavior,without causing chaotic degradation while minimizing the number of iterations needed in the system, a time difference of $h=0.0001$ is used, higher values resulted in the chaotic behavior degrating. This application of Euler’s method to 4D-HC4S results in Eq. \ref{eq_2}.
+To accurately capture the hyperchaotic behavior without causing chaotic degradation while minimizing the number of iterations needed in the system, a time difference of $h=0.0001$ is used, higher values resulted in the chaotic behavior degrading. This application of Euler’s method to 4D-HC4S results in Eq. \ref{eq_2}.
 \begin{equation}
 \begin{split}
  X_{n+1} &= X_n+h({\text{4D-HC4S}}(X_n, ParX))\\
@@ -334,7 +334,7 @@ To accurately capture the hyperchaotic behavior,without causing chaotic degradat
 %% Use \subsection commands to start a subsection.
 
 {\color{red}
-The system will be discretized into fixed-point arithmetic, this will become more important later in the article. It is important to note that only after 12 bits of precision does the system maintains hyperchaotic behavior, as can be seen in figure \ref{fig_4D-HC4S_pres}. Where lower precision makes the system step out of hyperchaos by its second LE.
+The system will be discretized into fixed-point arithmetic, this will become more important later in the article. It is important to note that only after 12 bits of precision does the system maintain hyperchaotic behavior, as can be seen in figure \ref{fig_4D-HC4S_pres}, whereas lower precision makes the system step out of hyperchaos by its second LE.
 }
 \begin{figure}[!t]
 \centering
@@ -369,7 +369,7 @@ The Lyapunov exponents of the discretized system, in nats/iteration, are given b
 \label{eq_EHC4S}
 LE({\text{4D-EHC4S}}) &\approx \ln(multiplier) + LE({\text{Eu-4D}})_{cont} \times h
 \end{align}
-Thus the all the Lyapunov exponets $LE \approx 9.4114$ in this case. While a higher value of the multiplier or parameters may seem a much better approach, the higher computational cost of using the multipliers needs to be taken into account, more discussion on the parameters selected is given in a future section.
+Thus the largest Lyapunov exponents $LE \approx 9.4114$ in this case. While a higher value of the multiplier or parameters may seem to be a much better approach, the higher computational cost of using the multipliers needs to be taken into account, more discussion on the parameters selected is given in a future section.
 }
 
 \begin{figure*}[!t]
@@ -428,16 +428,16 @@ The bifurcation diagram presented in Figure \ref{fig_5}, further corroborates th
 \end{figure*}
 
 {\color{red}
-\subsection{Paramaters and perturbations selection}
+\subsection{Parameters and perturbations selection}
 To optimize resource usage, all states and parameters are represented using signed fixed-point arithmetic. Custom Q formats were assigned to each variable based on its dynamic range and the precision required to preserve the system's chaotic behavior. In particular, the parameters and states of both systems must be maintained at a precision such that marginal quantization errors do not affect their chaotic dynamics. The system parameters were selected to strictly match those specified in the original publications. Deviating significantly from these nominal values can cause the system to exit the chaotic regime, converge to periodic orbits, or exhibit instability.
 
-A perturbation margin of $\Delta_m=\pm2^{-5}$ was determined to be the safe threshold for the 2D-HCAC system. Since two distinct perturbation sources must be accounted for, parametric perturbation and key integration, the latter requiring 16 bits of precision, a standard fractional precision of $\Delta_{st}=\pm2^{-21}$ was adopted for most variables. The same fractional presicion was used for the states of 4D-EHC4S, though their overall precision shouldn't greatly affect the system's behavior, due to the presence of the multiplier.
+A perturbation margin of $\Delta_m=\pm2^{-5}$ was determined to be the safe threshold for the 2D-HCAC system. Since two distinct perturbation sources must be accounted for, parametric perturbation and key integration, the latter requiring 16 bits of precision, a standard fractional precision of $\Delta_{st}=\pm2^{-21}$ was adopted for most variables. The same fractional precision was used for the states of 4D-EHC4S, though their overall precision shouldn't greatly affect the system's behavior, due to the presence of the multiplier.
 
 The system’s numerical precision directly influences the chaotic dynamics of the original 4D model \ref{fig_4D-HC4S_pres}. Maintaining a fractional precision greater than 12 bits is essential. With 21 bits, the system reliably preserves its inherent hyperchaotic behavior.
 
 In the 4D-EHC4S system, the modular multiplication module effectively dictates the largest Lyapunov exponents (LEs). Because of this dominance, the system reliably achieves hyperchaotic dynamics over a wide parameter space, reducing the sensitivity of the design to exact parameter selection. Nevertheless, the system's behavior is constrained at extreme parameter limits. Although the phase space remains bounded, excessively high parameter values cause the differential derivatives to grow by orders of magnitude. This results in highly stiff differential equations, which require drastically reduced numerical integration step sizes and consequently demand substantially higher computational power.
 
-Regarding the parameter for modular multiplication, a sweep of values was made for multiple sets of lengths, the chi-square p-value was measured looking to optimize this value for the multiple output lengths. 12227 has been choosen empirically in order to maximize the uniformity of the system output. This variable needs to be big enough to effectively mix the various parts of the dimension, while not to big to cause high computational overhead.
+Regarding the parameter for modular multiplication, a sweep of values was made for multiple sets of lengths, the chi-square p-value was measured looking to optimize this value for the multiple output lengths. 12227 has been chosen empirically in order to maximize the uniformity of the system output. This variable needs to be big enough to effectively mix the various parts of the dimension, while not so large as to cause high computational overhead.
 The results can be seen in figure \ref{fig_multi}.
 \begin{figure}[!ht]
 \centering
@@ -519,7 +519,7 @@ Finally, these three selected streams are combined via an XOR operation to produ
 
 \section{Hardware implementation}\label{sec_4}
 \subsection{Hardware}
-For the hardware realization of this work, the Terasic DE2-115 development board serves as the platform for this work. This robust development board is equipped with an Altera Cyclone IV E EP4CE115F29C7 FPGA chip with a {\color{red} clock frequency of 50 MHz clock}. This FPGA is a commonly adopted choice in contemporary research efforts  \cite{meranza-castillon_pseudorandom_2019} due to its advantageous balance of cost-effectiveness, low power consumption, and substantial logic resources.
+For the hardware realization of this work, the Terasic DE2-115 development board serves as the platform for this work. This robust development board is equipped with an Altera Cyclone IV E EP4CE115F29C7 FPGA chip with a {\color{red} clock frequency of 50 MHz}. This FPGA is a commonly adopted choice in contemporary research efforts  \cite{meranza-castillon_pseudorandom_2019} due to its advantageous balance of cost-effectiveness, low power consumption, and substantial logic resources.
 
 To enable efficient transmission of the generated data for analysis, the simple UART protocol (Universal Asynchronous Receiver/Transmitter) will be used.
 
@@ -619,7 +619,7 @@ KEY C & {$AABBCCDDEEFF0011\_2233445566778899\_$ \\ $AABBCCDDEEFF0011\_22334455_{
 \caption{PRNG trajectory, using different keys.\label{fig_9.5}}
 \end{figure}
 
-\section{Eficiency and security analysis}\label{sec_5}
+\section{Efficiency and security analysis}\label{sec_5}
 This section shows the results of several chaos and randomness tests to ensure suitability for cryptographic use. 
 \subsection{Resources used}
 An analysis of the computational resources consumed by the PRNG confirms that the PRNG implemented is not resource intensive and will not limit other functionalities within the platform. Table \ref{tab_3} presents a comprehensive overview of the resources used by the PRNG. The PRNG exhibits minimal resource consumption, with most categories utilizing less than $3\%$ of the available resources. In particular, multipliers account for the highest proportion of usage, at $23\%$, showing their role in the arithmetic operations of the system. 
@@ -651,7 +651,7 @@ To effectively resist brute force attacks, a PRNG's key space must be sufficient
 {
   \color{red} 
 \subsection{Time analysis}
-The time performance of the proposed PRNG was evaluated based on its maximum operating frequency and overall data throughput. Driven by the fpga real 50 MHz clock, with an 8-bit output width for the PRNG yields a throughput of 66.6 Mb/s. While increasing the output width could achieve higher throughput, testing for such a throughput has not been performed.
+The time performance of the proposed PRNG was evaluated based on its maximum operating frequency and overall data throughput. Driven by the FPGA's actual 50 MHz clock, with an 8-bit output width for the PRNG yields a throughput of 66.6 Mb/s. While increasing the output width could achieve higher throughput, testing for such a throughput has not been performed.
 
 A timing analysis of the proposed system demonstrates a maximum operating clock frequency of 55.41 MHz. With a critical path delay of 18.375ns. To eliminate negative slack and satisfy timing constraints, the chaotic generator was implemented using a 6-stage pipelined architecture. While this deep pipelining successfully breaks down the critical path of the complex chaotic arithmetic, there is an inherent tradeoff between the algebraic complexity of the chosen map and the maximum attainable clock speed. 
 }
@@ -696,8 +696,7 @@ Although chaos testing is not typically applied to PRNGs, given that they are no
 
 The 0-1 test, developed by Gottwald-Melbourne \cite{gottwald_new_2004}, assesses chaos by calculating the correlation coefficient $K$ from the time series. A value of $K \approx 1$ indicates chaotic behavior, while $K \approx 0$ indicates a lack of chaos. An analysis of 5,000 sequences generated using $KEY_\text{ref}$ yielded a value $K = 0.9980$, effectively demonstrating chaotic content within the system.
 
-The maximum l
-Methods for analyzing the maximum Lyapunov exponent ($LE_{max}$) from a time series prove beneficial in this context. Applying the Rosenstein algorithm \cite{rosenstein_practical_1993} to the PRNG's output resulted in $LE_{max} = 0.674924$. Although this value is smaller than that observed in the standalone 4D-HC4S system, its positive nature serves as further evidence to support the chaotic characteristics embedded within the PRNG.
+The maximum Lyapunov exponent from the 4D-EHC4S system was measured to be $LE_{max} = 9.4114$. While not commonly applied directly to PRNGs themselves, methods for analyzing the maximum Lyapunov exponent from a time series prove beneficial in this context. Applying the Rosenstein algorithm \cite{rosenstein_practical_1993} to the PRNG's output resulted in $LE_{max} = 0.674924$. Although this value is smaller than that observed in the standalone 4D-EHC4S system, its positive nature serves as further evidence to support the chaotic characteristics embedded within the PRNG.
 
 \subsection{NIST 800-22 randomness test}
 The NIST 800-22 suite \cite{bassham_statistical_2010} represents the most rigorous and widely accepted standard for evaluating the randomness of PRNGs intended for cryptographic applications. Its 15 distinct tests examine PRNG sequences for exploitable patterns, biases, and correlations. Together, these tests determine whether a sequence generated can be considered cryptographically random.
@@ -759,7 +758,7 @@ BlockAlphabit & $102/102$ \\
   \color{red}
 \subsection{NIST 800-90B}
 
-While a non standard test to PRNGs and more commoly associated with True random number generators, the test NIST 800-90B can be used to assess randomness. NIST 800-90B focuses on estimating a conservative lower bound on the entropy of potentially non-IID sources. Consequently, we employ SP 800-90B as a complementary, deployment-oriented metric that is more directly tied to underlying entropy quality than p-value batteries alone. 
+While a non standard test to PRNGs and more commonly associated with True random number generators, the test NIST 800-90B can be used to assess randomness. NIST 800-90B focuses on estimating a conservative lower bound on the entropy of potentially non-IID sources. Consequently, we employ SP 800-90B as a complementary, deployment-oriented metric that is more directly tied to underlying entropy quality than p-value batteries alone. 
 
 Following the 800-90B guidelines, a dataset of $1 \times 10^6$ bits was collected from the FPGA implementation. For secure deployment, we adopt the standard practical criterion of $H_{min} > 0.79$ bits per symbol. As summarized in Table \ref{tab_nist_90B}, all generated sequences exceed this threshold. 
 
@@ -836,7 +835,7 @@ Furthermore, uniformity analysis through histograms and the chi-square test conf
 
 The statistical results confirm the success of this approach, as the PRNG maintains an unpredictable dynamic. Most importantly, the generated bit streams passed the complete NIST 800-22 statistical test suite as well as the TestU01 test batteries, showing its high quality and suitability for cryptographic applications.
 
-Even though the throughput of the system is not as high as with others, the resource usage presents a small footprint in the overall FPGA and the statistical quality of the generated sequences is comparable to other designs in the literature. 
+Even though the throughput of the system is not as high as that of the other systems, the resource usage presents a small footprint in the overall FPGA and the statistical quality of the generated sequences is comparable to other designs in the literature. 
 While this study comprehensively validates the statistical randomness and hardware efficiency of the PRNG, future work could focus on application-level demonstrations. Specifically, the integration of proposed architecture into a complete hardware-based chaos encryption scheme, such as secure real-time image or video encryption, to further demonstrate its practical cryptographic utility in real-world scenarios.
 
 {\color{red}
