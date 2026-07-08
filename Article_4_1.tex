@@ -334,7 +334,7 @@ To accurately capture the hyperchaotic behavior,without causing chaotic degradat
 %% Use \subsection commands to start a subsection.
 
 {\color{red}
-This will become more important in a moment but the but the system will be discretized into fixed-point arithmetic, thus it is important to note that only after 12 bits of precision does the system maintains hyperchaotic behavior, as can be seen in figure \ref{fig_4D-HC4S_pres}. Where lower precision makes the system step out of hyperchaos by its second LE.
+The system will be discretized into fixed-point arithmetic, this will become more important later in the article. It is important to note that only after 12 bits of precision does the system maintains hyperchaotic behavior, as can be seen in figure \ref{fig_4D-HC4S_pres}. Where lower precision makes the system step out of hyperchaos by its second LE.
 }
 \begin{figure}[!t]
 \centering
@@ -840,7 +840,7 @@ Even though the throughput of the system is not as high as with others, the reso
 While this study comprehensively validates the statistical randomness and hardware efficiency of the PRNG, future work could focus on application-level demonstrations. Specifically, the integration of proposed architecture into a complete hardware-based chaos encryption scheme, such as secure real-time image or video encryption, to further demonstrate its practical cryptographic utility in real-world scenarios.
 
 {\color{red}
-Beyond cryptographic applications, the proposed framework presents significant potential for integration into Neural Networks. Recent studies utilizing Hopfield neural networks and memristors have demonstrated considerable promise in enhancing network dynamics for complex tasks, such as robot navigation \cite{lai_unified_2025}. The proposed 4D-2D hybrid PRNG could be utilized to initialize memristive synaptic weights or drive chaotic neurons within such neural architectures, thereby further enhancing their dynamic performance.
+Beyond cryptographic applications, the proposed framework presents significant potential for integration into Neural Networks. Recent studies utilizing Hopfield neural networks and memristors have demonstrated considerable promise in enhancing network dynamics for complex tasks, such as robot navigation \cite{lai_universal_2025}. The proposed 4D-2D hybrid PRNG could be utilized to initialize memristive synaptic weights or drive chaotic neurons within such neural architectures, thereby further enhancing their dynamic performance.
 
 A limitation of the current initial key integration is its reliance on static fractional scaling. This linear mapping can potentially introduce predictable relationships between the key bits and the initial chaotic states, which may reduce the effective key space against sophisticated cryptanalysis. To mitigate this vulnerability and further enhance cryptographic security, future iterations of the framework could incorporate a dynamic, nonlinear key scheduling algorithm, as well as dynamic bit width adaptive mechanism.
 
@@ -890,10 +890,6 @@ This research did not receive any specific grant from funding agencies in the pu
 
 \begin{thebibliography}{00}
 
-%% For numbered reference style
-%% \bibitem{label}
-%% Text of bibliographic item
-
 \bibitem{li_high-performance_2024}
 S. Li, Z. Lin, Y. Yang, R. Ning, 2024. A high-performance FPGA PRNG based on multiple deep-dynamic transformations. Entropy. 26, 671. https://doi.org/10.3390/e26080671.
 
@@ -901,19 +897,19 @@ S. Li, Z. Lin, Y. Yang, R. Ning, 2024. A high-performance FPGA PRNG based on mul
 N.T. Nguyen, T. Bui, G. Gagnon, P. Giard, G. Kaddoum, Designing a pseudorandom bit generator with a novel five-dimensional-hyperchaotic system, IEEE Trans. Ind. Electron. 69 (2022) 6101–6110. https://doi.org/10.1109/TIE.2021.3088330.
 
 \bibitem{al-azzawi_new_2023}
-Al-Azzawi SF, Hasan AM. New 5d hyperchaotic system derived from the sprott c system: Properties and anti synchronization. Journal of Intelligent Systems and Control. 2023;2(2):110-122. https://doi.org/10.56578/jisc020205.
+S.F. Al-Azzawi, A.M. Hasan, New 5D hyperchaotic system derived from the Sprott C system: Properties and anti synchronization, J. Intell. Syst. Control. 2 (2023) 110–122. https://doi.org/10.56578/jisc020205.
 
 \bibitem{luo_design_2024}
-Y. Luo, C. Fan, C. Xu, X. Li, 2024. Design and FPGA implementation of a high-speed PRNG based on an n-D non-degenerate chaotic system. Chaos Solitons Fractals. 183, 114951. https://doi.org/10.1016/j.chaos.2024.114951
+Y. Luo, C. Fan, C. Xu, X. Li, 2024. Design and FPGA implementation of a high-speed PRNG based on an n-D non-degenerate chaotic system. Chaos Solitons Fractals. 183, 114951. https://doi.org/10.1016/j.chaos.2024.114951.
 
 \bibitem{sun_dynamic_2025}
-X. Sun, J. Zheng, 2025. A dynamic information flow control framework for hyperchaos in complex-variable systems and FPGA-based applications. Chaos Solitons Fractals. 199, 116858. https://doi.org/10.1016/j.chaos.2025.116858
+X. Sun, J. Zheng, 2025. A dynamic information flow control framework for hyperchaos in complex-variable systems and FPGA-based applications. Chaos Solitons Fractals. 199, 116858. https://doi.org/10.1016/j.chaos.2025.116858.
 
 \bibitem{moussa_ultra_2026}
-K.H. Moussa, A.M.M. Elden, A.I. Zaki, M.E. Khedr, 2026. Ultra-complex 5D cubic–trigonometric memristive hyperchaos featuring phase-space folding, fractal basins and high-entropy PRNG. Chaos Solitons Fractals. 206, 117974. https://doi.org/10.1016/j.chaos.2026.117974
+K.H. Moussa, A.M.M. Elden, A.I. Zaki, M.E. Khedr, 2026. Ultra-complex 5D cubic–trigonometric memristive hyperchaos featuring phase-space folding, fractal basins and high-entropy PRNG. Chaos Solitons Fractals. 206, 117974. https://doi.org/10.1016/j.chaos.2026.117974.
 
 \bibitem{fraga_design_2025}
-L.G. De La Fraga, E. Tlelo-Cuautle, 2025. Design insights for implementing a PRNG with fractional Lorenz system on ESP32 and FPGA. Integration. 107, 102622. https://doi.org/10.1016/j.vlsi.2025.102622
+L.G. De La Fraga, E. Tlelo-Cuautle, 2025. Design insights for implementing a PRNG with fractional Lorenz system on ESP32 and FPGA. Integration. 107, 102622. https://doi.org/10.1016/j.vlsi.2025.102622.
 
 \bibitem{vaidyanathan_new_2021}
 S. Vaidyanathan, et al., A new multistable 4-D hyperchaotic four-scroll system, its dynamic analysis and circuit design, Eng. Lett. 29 (2021) 1311–1318.
@@ -925,7 +921,7 @@ K. Benkouider, I.A.R. Moghrabi, A. Sambas, S. Kaçar, S. Uzun, B.A. Hassan, et a
 Q. Yang, L. Yang, B. Ou, 2019. Hidden hyperchaotic attractors in a new 5D system based on chaotic system with two stable node-foci. Int. J. Bifurcation Chaos. 29, 1950092. https://doi.org/10.1142/S0218127419500925.
 
 \bibitem{dong_hidden_2022}
-C. Dong, J. Wang, 2022. Hidden and coexisting attractors in a novel 4D hyperchaotic system with no equilibrium point. Fractal Fract. 6, 306. 2022;6(6):306. https://doi.org/10.3390/fractalfract6060306.
+C. Dong, J. Wang, 2022. Hidden and coexisting attractors in a novel 4D hyperchaotic system with no equilibrium point. Fractal Fract. 6, 306. https://doi.org/10.3390/fractalfract6060306.
 
 \bibitem{al-talib_new_2023}
 Z.S. Al-Talib, S.F. Al-Azzawi, A new simple 6D hyperchaotic system with hyperbolic equilibrium and its electronic circuit, Iraqi J. Comput. Sci. Math. 4 (2023) 155–166. https://doi.org/10.52866/ijcsm.2023.01.01.0013.
@@ -940,7 +936,7 @@ F. Dridi, S. El Assad, W. El Hadj Youssef, M. Machhout, 2023. Design, hardware i
 Y. Zhang, Z. Hua, H. Bao, H. Huang, 1-D complex-variable chaotic model with hardware implementation, IEEE Trans. Ind. Inform. 22 (2025) 1659–1670. https://doi.org/10.1109/tii.2025.3629682.
 
 \bibitem{tang_1D_2025}
-J. Tang, Y. Zhao, J. Hou, W. Song, J. Wang, 2025. A novel model for 1D chaotic map generation with FPGA implementation and PRNG application. Nonlinear Dyn. 113, 28341–28361. https://doi.org/10.1007/s11071-025-11527-z.
+J. Tang, Y. Zhao, J. Hou, W. Song, J. Wang, A novel model for 1D chaotic map generation with FPGA implementation and PRNG application, Nonlinear Dyn. 113 (2025) 28341–28361. https://doi.org/10.1007/s11071-025-11527-z.
 
 \bibitem{tang_2D_2025}
 J. Tang, J. Hou, Y. Zhao, 2-D chaotic model with FPGA implementation and its application in PRNG, IEEE Trans. Ind. Electron. 72 (2025) 14106–14115. https://doi.org/10.1109/tie.2025.3563711.
@@ -979,7 +975,7 @@ L. Shi, X. Li, B. Jin, Y. Li, 2024. A chaos-based encryption algorithm to protec
 A. Perez-Resa, M. Garcia-Bosque, C. Sanchez-Azqueta, S. Celma, Chaotic encryption applied to optical Ethernet in industrial control systems, IEEE Trans. Instrum. Meas. 68 (2019) 4876–4886. https://doi.org/10.1109/TIM.2019.2896550.
 
 \bibitem{senouci_fpga_2017}
-A. Senouci, H. Bouhedjeur, K. Tourche, A. Boukabou, FPGA based hardware and device-independent implementation of chaotic generators, AEU - Int. J. Electron. Commun. 82 (2017) 211–220.  https://doi.org/10.1016/j.aeue.2017.08.011.
+A. Senouci, H. Bouhedjeur, K. Tourche, A. Boukabou, FPGA based hardware and device-independent implementation of chaotic generators, AEU - Int. J. Electron. Commun. 82 (2017) 211–220. https://doi.org/10.1016/j.aeue.2017.08.011.
 
 \bibitem{hocine_prng_2023}
 M. Hocine, M. Lahcene, T. Larbi, A.-P. Adda, A PRNG based on an improved chaotic map using a self-perturbation mechanism, Rev. Rom. Inform. Autom. 33 (2023) 47–60. https://doi.org/10.33436/v33i2y202304.
@@ -994,16 +990,19 @@ A.M. Garipcan, E. Erdem, A TRNG using chaotic entropy pool as a post-processing 
 X. Shi, Y. Su, X. Yang, W. Feng, X. Zhang, Z. Chen, G. Wen, H. Wen, 2026. Lossless Frequency-Domain Image Encryption via 3D Exponential Hyper-Chaotic Map and Integer Lifting Wavelet Transform. Axioms. 15, 315. https://doi.org/10.3390/axioms15050315.
 
 \bibitem{feng_exploiting_2024}
-W. Feng, J. Zhang, Y. Chen, Z. Qin, Y. Zhang, M. Ahmad, M. Woźniak, 2024. Exploiting robust quadratic polynomial hyperchaotic map and pixel fusion strategy for efficient image encryption. Expert Systems With Applications. 246, 123190. https://doi.org/10.1016/j.eswa.2024.123190.
+W. Feng, J. Zhang, Y. Chen, Z. Qin, Y. Zhang, M. Ahmad, M. Woźniak, 2024. Exploiting robust quadratic polynomial hyperchaotic map and pixel fusion strategy for efficient image encryption. Expert Syst. Appl. 246, 123190. https://doi.org/10.1016/j.eswa.2024.123190.
+
+\bibitem{lai_universal_2025}
+Q. Lai, M. Qin, Universal method for enhancing dynamics in neural networks via Memristor and application in IoT-Based robot navigation, IEEE Trans. Cybern. 56 (2025) 557–566. https://doi.org/10.1109/tcyb.2025.3607140.
 
 \bibitem{lai_unified_2025}
-Q. Lai, C. Zhu, X. Zhao, X. Sun, J. Hua, 2025. A Unified Framework for Generating 4-D Discrete Memristive Hyperchaotic Maps With Complex Dynamics and Application to Encryption. IEEE Internet of Things Journal. 12, 40934-40943. https://doi.org/10.1109/jiot.2025.3590465.
+Q. Lai, C. Zhu, X. Zhao, X. Sun, J. Hua, A Unified Framework for Generating 4-D Discrete Memristive Hyperchaotic Maps With Complex Dynamics and Application to Encryption, IEEE Internet Things J. 12 (2025) 40934–40943. https://doi.org/10.1109/jiot.2025.3590465.
 
 \bibitem{lai_encryption_2025}
-Q. Lai, H. Hua, L. Yang, 2025. Encryption Design and Analysis of 3-D Medical Models in Internet of Medical Things Using a Novel Memristive Hyperchaotic Map. IEEE Internet of Things Journal. 12, 39019-39028. https://doi.org/10.1109/jiot.2025.3587815.
+Q. Lai, H. Hua, L. Yang, Encryption Design and Analysis of 3-D Medical Models in Internet of Medical Things Using a Novel Memristive Hyperchaotic Map, IEEE Internet Things J. 12 (2025) 39019–39028. https://doi.org/10.1109/jiot.2025.3587815.
 
 \bibitem{he_multi_2025}
-T. He, F. Yu, Y. Lin, S. He, W. Yaoi, S. Cai, J. Jin, 2025. Multi-scroll hopfield neural network excited by memristive self-synapses and its application in image encryption. Chinese Physics B. 34, 120506. https://doi.org/10.1088/1674-1056/adfeff.
+T. He, F. Yu, Y. Lin, S. He, W. Yaoi, S. Cai, J. Jin, 2025. Multi-scroll hopfield neural network excited by memristive self-synapses and its application in image encryption. Chinese Phys. B. 34, 120506. https://doi.org/10.1088/1674-1056/adfeff.
 
 \bibitem{yu_extreme_2026}
 F. Yu, X. Wang, Y. Xiao, Y. He, W. Yao, S. Cai, J. Jin, 2026. Extreme multistability in discrete memristive neuron maps and implications for dual-field applications. Integration. 109, 102688. https://doi.org/10.1016/j.vlsi.2026.102688.
@@ -1012,10 +1011,10 @@ F. Yu, X. Wang, Y. Xiao, Y. He, W. Yao, S. Cai, J. Jin, 2026. Extreme multistabi
 F. Yu, R. Guo, M. Zheng, W. Yao, D. Zhang, S. Cai, 2026. Novel approach to time series forecasting based on memristive Hopfield Neural Network with hidden heterogeneous and homogeneous extreme multistability. Chaos Solitons Fractals. 210, 118626. https://doi.org/10.1016/j.chaos.2026.118626.
 
 \bibitem{meranza_novel_2026}
-M. Meranza-Castillón, C. Cruz-Hernández, R. López-Gutiérrez, S. González-López, M. Murillo-Escobar, 2026. A novel image cryptosystem for FPGA based on 8-bit pseudorandom number generator with enhanced chaos and SHA-256. Integration. 110, 102779. https://doi.org/10.1016/j.vlsi.2026.102779.
+M.A. Meranza-Castillón, C. Cruz-Hernández, R. López-Gutiérrez, S. González-López, M. Murillo-Escobar, 2026. A novel image cryptosystem for FPGA based on 8-bit pseudorandom number generator with enhanced chaos and SHA-256. Integration. 110, 102779. https://doi.org/10.1016/j.vlsi.2026.102779.
 
 \bibitem{lai_family_2025}
-Q. Lai, Y. Liu, 2025. A family of image encryption schemes based on hyperchaotic system and cellular automata neighborhood. Science China Technological Sciences. 68 (3). https://doi.org/10.1007/s11431-024-2678-7.
+Q. Lai, Y. Liu, 2025. A family of image encryption schemes based on hyperchaotic system and cellular automata neighborhood. Sci. China Technol. Sci. 68, 1320401. https://doi.org/10.1007/s11431-024-2678-7.
 
 \bibitem{benettin_lyapunov_1980}
 G. Benettin, L. Galgani, A. Giorgilli, J.-M. Strelcyn, Lyapunov characteristic exponents for smooth dynamical systems and for Hamiltonian systems; a method for computing all of them. Part 1: Theory, Meccanica 15 (1980) 9–20. https://doi.org/10.1007/BF02128236.
@@ -1027,7 +1026,7 @@ X. Zhou, C. Li, X. Lu, T. Lei, Y. Zhao, 2021. A 2D hyperchaotic map: Amplitude c
 Z. Hua, Y. Zhang, Y. Zhou, Two-dimensional modular chaotification system for improving chaos complexity, IEEE Trans. Signal Process. 68 (2020) 1937–1949. https://doi.org/10.1109/TSP.2020.2979596.
 
 \bibitem{meranza-castillon_pseudorandom_2019}
-M. Meranza-Castillón, M. Murillo-Escobar, R. López-Gutiérrez, C. Cruz-Hernández, Pseudorandom number generator based on enhanced Hénon map and its implementation, AEU - Int. J. Electron. Commun. 107 (2019) 239–251. https://doi.org/10.1016/j.aeue.2019.05.028.
+M.O. Meranza-Castillón, M.A. Murillo-Escobar, R. López-Gutiérrez, C. Cruz-Hernández, Pseudorandom number generator based on enhanced Hénon map and its implementation, AEU - Int. J. Electron. Commun. 107 (2019) 239–251. https://doi.org/10.1016/j.aeue.2019.05.028.
 
 \bibitem{murillo-escobar_pseudorandom_2023}
 D. Murillo-Escobar, M.A. Murillo-Escobar, C. Cruz-Hernández, A. Arellano-Delgado, R.M. López-Gutiérrez, Pseudorandom number generator based on novel 2D Hénon-sine hyperchaotic map with microcontroller implementation, Nonlinear Dyn. 111 (2023) 6773–6789. https://doi.org/10.1007/s11071-022-08101-2.
@@ -1048,7 +1047,7 @@ G.A. Gottwald, I. Melbourne, A new test for chaos in deterministic systems, Proc
 M.T. Rosenstein, J.J. Collins, C.J. De Luca, A practical method for calculating largest Lyapunov exponents from small data sets, Physica D 65 (1993) 117–134.
 
 \bibitem{bassham_statistical_2010}
-L.E. Bassham, A.L. Rukhin, J. Soto, J.R. Nechvatal, M.E. Smid, S.D. Leigh, et al., A statistical test suite for random and pseudorandom number generators for cryptographic applications, National Institute of Standards and Technology, Gaithersburg, MD, 2010.
+L.E. Bassham, A.L. Rukhin, J. Soto, J.R. Nechvatal, M.E. Smid, S.D. Leigh, et al., A statistical test suite for random and pseudorandom number generators for cryptographic applications, National Institute of Standards and Technology, Gaithersburg, MD, 2010. NIST SP 800-22 Rev. 1a.
 
 \bibitem{garipcan_hardware_2021}
 A.M. Garipcan, E. Erdem, Hardware implementation of chaotic zigzag map based bitwise dynamical pseudo random number generator on field-programmable gate array, Inform. MIDEM 51 (2021) 243–254. https://doi.org/10.33180/InfMIDEM2020.402.
@@ -1058,7 +1057,6 @@ L. Ding, C. Liu, Y. Zhang, Q. Ding, 2019. A new lightweight stream cipher based 
 
 \bibitem{yu_design_2021}
 F. Yu, Z. Zhang, H. Shen, Y. Huang, S. Cai, J. Jin, et al., 2021. Design and FPGA implementation of a pseudo-random number generator based on a Hopfield neural network under electromagnetic radiation. Front. Phys. 9, 690651. https://doi.org/10.3389/fphy.2021.690651.
-
 
 \end{thebibliography}
 
