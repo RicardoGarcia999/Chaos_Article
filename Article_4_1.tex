@@ -268,7 +268,7 @@ The continuous system 4D-HC4S is described by the following set of differential 
 \end{split}
 \label{eq_1}
 \end{equation}
-\begin{figure*}[!t]
+\begin{figure*}[htb]
 \centering
 \begin{subfigure}{0.48\textwidth}
     \includegraphics[width=\linewidth]{Figuras IEEE/atractores_4D_HC4S/a.pdf}
@@ -299,7 +299,7 @@ Using the Benettin algorithm for LE \cite{benettin_lyapunov_1980}, the Lyapunov 
 
 Complementing this, bifurcation diagrams, Figure \ref{fig_3}, visually illustrate the system states' transition from periodic and quasi-periodic states to the desired chaotic regime, corroborating the findings from the spectrum analysis. 
 
-\begin{figure*}[!t]
+\begin{figure*}[htb]
 \centering
 \begin{subfigure}{0.48\textwidth}
     \includegraphics[width=\linewidth]{Figuras IEEE/bifurcation_4D_HC4S/a.pdf}
@@ -325,7 +325,7 @@ Complementing this, bifurcation diagrams, Figure \ref{fig_3}, visually illustrat
 \label{fig_3}
 \end{figure*}
 {\color{red}
-The continuous 4D system is discretized using the first-order Euler method. While advanced solvers, such as the fourth-order Runge-Kutta (RK4) method, offer superior numerical accuracy and reduce state correlation, they impose significant computational overhead and consume excessive hardware resources. In some instances, less complicated numerical solutions have been found to have better chaotic response \cite{senouci_fpga_2017}. To maintain hardware efficiency, the Euler method was selected; however, it should be acknowledged that a small step size can introduce correlation between consecutive continuous states. 
+The continuous 4D system is discretized via the Euler method. While advanced solvers like the Runge-Kutta 4 (RK4) method offer superior numerical accuracy and reduce state correlation, they impose heavy computational overhead and consume excessive hardware resources.In some instances, less complicated numerical solutions have been found to have better chaotic response \cite{senouci_fpga_2017}. To maintain hardware efficiency, the Euler method was applied; however, it should be acknowledged that a small step size can introduce correlation between consecutive continuous states. 
 }
 To accurately capture the hyperchaotic behavior without causing chaotic degradation while minimizing the number of iterations needed in the system, a time difference of $h=0.0001$ is used, higher values resulted in the chaotic behavior degrading. This application of Euler’s method to 4D-HC4S results in Eq. \ref{eq_2}.
 \begin{equation}
@@ -340,7 +340,7 @@ To accurately capture the hyperchaotic behavior without causing chaotic degradat
 {\color{red}
 The system will be discretized into fixed-point arithmetic, this will become more important later in the article. It is important to note that only after 12 bits of precision does the system maintain hyperchaotic behavior, as can be seen in figure \ref{fig_4D-HC4S_pres}, whereas lower precision makes the system step out of hyperchaos by its second LE.
 }
-\begin{figure}[!t]
+\begin{figure}[!htb]
 \centering
 \includegraphics[width=0.73\textwidth]{Figuras IEEE/HC4S_4D_Precision.pdf}
 {\color{red}
@@ -378,7 +378,7 @@ LE({\text{4D-EHC4S}}) &\approx \ln(multiplier) + LE({\text{Eu-4D}})_{cont} \time
 Thus the largest Lyapunov exponents $LE \approx 9.4114$ in this case. While a higher value of the multiplier or parameters may seem to be a much better approach, the higher computational cost of using the multipliers needs to be taken into account, more discussion on the parameters selected is given in a future section.
 }
 
-\begin{figure*}[!t]
+\begin{figure}[!t]
 \centering
 \subfloat[]{\includegraphics[width=0.48\textwidth]{Figuras IEEE/bifurcation_4D_EHC4S/a.pdf}}% 1
 \hfill
@@ -390,7 +390,7 @@ Thus the largest Lyapunov exponents $LE \approx 9.4114$ in this case. While a hi
 
 \caption{The 4D-EHC4S bifurcation diagram as a $a_{4D}$ parameter sweep. (a) $x$ state. (b) $y$ state. (c) $z$ state. (d) $w$ state.}
 \label{fig_3.5}
-\end{figure*}
+\end{figure}
 
 \subsection{2D Hyperchaotic Map with amplitude control system}
 The discrete 2D system 2D-HCAC is described by the map in Eq. \ref{eq_3}, with the states $U_n=(u_n,v_n)^T$ and parameters $ParU = (a_{2D},b_{2D},c_{2D},d_{2D})^T$. The attractor is shown in Figure \ref{fig_4}.
@@ -445,7 +445,7 @@ In the 4D-EHC4S system, the modular multiplication module effectively dictates t
 
 Regarding the parameter for modular multiplication, a sweep of values was made for multiple sets of lengths, the chi-square p-value was measured looking to optimize this value for the multiple output lengths. 12227 has been chosen empirically in order to maximize the uniformity of the system output. This variable needs to be big enough to effectively mix the various parts of the dimension, while not so large as to cause high computational overhead.
 The results can be seen in figure \ref{fig_multi}.
-\begin{figure}[!ht]
+\begin{figure}[!htb]
 \centering
 \includegraphics[width=0.72\textwidth]{Figuras IEEE/Multi_histo_chi.pdf}
 \caption{Multiplicator sweep.\label{fig_multi}}
@@ -456,7 +456,7 @@ The results can be seen in figure \ref{fig_multi}.
 The format of the variables for each system and their precision can be seen in Table \ref{tab_1}.
 }
 
-\begin{table}[h]
+\begin{table}[htb]
 \centering
 \footnotesize
 \caption{Systems variable formats.}\label{tab_1}
@@ -564,7 +564,7 @@ The overall architecture and interconnections of the various modules within the 
 {\color{red}
 To ensure the necessary buffer capacity for the system, the primary module was subdivided into six processing stages. This architectural choice was implemented to enhance pipeline efficiency and prevent data bottlenecks.}
 The entire sequence generation process is shown by the steps outlined in Algorithm \ref{alg_1}.
-\begin{figure} [!ht]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=0.8\textwidth]{Figuras IEEE/Diagrama PRNG Articulo(3).png}
 \caption{Schematic of the proposed PRNG.\label{fig_9}}
@@ -673,7 +673,7 @@ To evaluate this property, the normalized Hamming distance was measured between 
 {\color{red}
 The system was tested using 100 distinct keys, each distinct from a reference key $KEY_\text{ref}$ (see Table \ref{tab_4} for its hexadecimal representation, where underscores serve as visual separators). For each key, 100,000 output bits were generated and compared bitwise to the reference key's output. The normalized Hamming distances resulted in a mean of $49.981\%$ with a normalized standard deviation of $1.499 \times 10^{-3}$,  indicating strong sensitivity to the initial key.
 }
-\begin{table}[h]
+\begin{table}[htb]
 \centering
 \caption{Key reference for Hamming distance.}
 \label{tab_4}
@@ -688,12 +688,12 @@ $KEY_\text{ref}$ & {$0123456789ABCDEF\_0123456789ABCDEF\_$ \\ $0123456789ABCDEF\
 \end{table}
 
 \subsection{Uniformity}
-A robust PRNG is mandated to produce output sequences that closely approximate a uniform distribution. Any inherent bias or tendencies in the generated values directly compromises the PRNG's security by increasing its vulnerability to cryptanalysis.
+A robust PRNG is mandated to produce output sequences that closely approximate a uniform distribution. Any inherent bias or tendencies in the generated values directly compromises the PRNG's security by increasing its vulnerability to cryptanalysis.a
 {\color{red}
 Output uniformity was evaluated using a histogram of 25,600,000 iterations of 8-bit values generated using $KEY_\text{ref}$ and chi-square test. The frequency of each value should ideally be $1 \times 10^{5}$ for a uniform distribution. As depicted in Figure \ref{fig_11}, the observed frequencies align closely with this ideal.
 }
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \centering
 \includegraphics[width=0.72\textwidth]{Figuras IEEE/Histogram_PRNG_FPGA_25_6_MILL.pdf}
 \caption{PRNG histogram.\label{fig_11}}
@@ -714,7 +714,7 @@ The NIST 800-22 suite \cite{bassham_statistical_2010} represents the most rigoro
 For a specific test to pass, its calculated p-value must be greater or equal than the significance level ($\alpha = 0.01$). Within the NIST framework, the reported p-value reflects the chi-squared for the uniform distribution of p-values across all sequences analyzed. Furthermore, if the proportion of passing sequences is $\geq 0.97$ (for 100 sequences), the overall test is a pass. 
 
 In this study, 100 sequences of $10^6$ bits were generated using distinct random keys for analysis. As summarized in Table \ref{tab_5} (where an asterisk (*) denotes the average for tests involving multiple subtests), all tests within the NIST 800-22 suite produced a passing proportion. This comprehensive success demonstrates the suitability of the proposed PRNG for cryptographic applications.
-\begin{table}[h]
+\begin{table*}[htb]
 \centering
 \footnotesize
 \caption{PRNG NIST 800-22 results.}
@@ -741,13 +741,13 @@ Random Excursions Variant Test* & $0.467517$ & $0.99$ & Passed \\
 Serial Test*   & $0.064670$ & $1.00$ & Passed \\
 Linear Complexity Test    & $0.897763$ & $1.00$ & Passed \\
 \end{tblr}
-\end{table}
+\end{table*}
 
 \subsection{TestU01}
 TestU01 is an open-source library for empirically testing the statistical randomness of a PRNG. The library includes multiple batteries of tests that evaluate a PRNG’s randomness. In this study, three batteries were used: Rabbit, Alphabit, and BlockAlphabit. These specific test batteries were designed to test hardware random bit generators.
 Each battery contains many statistical tests, and each test produces a p‑value. For a PRNG to pass a statistical test, the p‑value should fall within $[0.001,0.999]$.
 Using the same sequences as in the previous test, the Rabbit, Alphabit, and BlockAlphabit batteries were applied to evaluate the PRNG. Table \ref{tab_5.1} shows that the proposed PRNG passes all statistical tests.
-\begin{table}[h]
+\begin{table}[htb]
 \centering
 \footnotesize
 \caption{PRNG TestU01 results.}
@@ -775,7 +775,7 @@ Following the 800-90B guidelines, a dataset of $1 \times 10^6$ bits was collecte
 
 The estimator breakdown reveals a consistent convergence across different models.  Practically, achieving $H_{min} > 0.79$ demonstrates that the proposed hybrid PRNG possesses a robust entropy foundation, guaranteeing that the output satisfies the stringent entropy requirements for direct integration into cryptographic applications.
 
-\begin{table}[h]
+\begin{table}[htb]
 \centering
 \footnotesize
 \caption{PRNG NIST 800-90B results.}
@@ -801,7 +801,7 @@ LZ78Y  & $0.99893$ & $0.99928$ & $0.99894$ & $0.99855$ & $0.99894$ \\
 }
 \subsection{Comparison with literature}\label{sec6}
 Numerous prior works have explored the development and application of PRNGs on various platforms. A comparative overview between these existing works and the proposed PRNG is presented in Table \ref{tab_6}.
-\begin{table*}[!t]
+\begin{table*}[htb]
 \centering
 \footnotesize
 \caption{Comparisons with similar schemes in literature.}
