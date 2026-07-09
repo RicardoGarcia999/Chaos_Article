@@ -212,15 +212,14 @@ While the 4D continuous hyperchaotic system and the 2D discrete map utilized in 
 
 The main contributions of the article are:
 \begin{itemize}[leftmargin=2.5em, itemsep=0.1em, label=\textbullet]
-  \item Novel hybrid PRNG architecture based on a dynamic coupling scheme between existing 4D continuous and 2D discrete hyperchaotic systems.
-  \item Dynamic parametric perturbation to mitigate digital signal degradation.
-  \item Modular multiplication and non-linear processing enhance state space.
-  \item Efficient FPGA implementation using fixed-point arithmetic in VHDL.
-  \item Validated via NIST 800-22 and TestU01 tests with a robust 224-bit key space.
+  \item Novel hybrid PRNG architecture based on a dynamic coupling scheme is proposed between hyperchaotic systems.
+  \item Dynamic parametric perturbation is designed to mitigate digital degradation of chaos.
+  \item Modular multiplication and non-linear processing are considered to enhance the randomness and uniformity of chaos.
+  \item Efficient FPGA implementation using fixed-point arithmetic in VHDL is designed.
+  \item The proposed PRNG is analyzed via standard randomness tests and security analysis considering a robust 224-bit key space.
 \end{itemize}
 }
 
-\subsection{Outline}
 The manuscript is outlined as follows. Section \ref{sec_2} of this paper establishes the common challenges of using chaotic systems for cryptographic purposes and details the mitigation strategies proposed in the literature. Section \ref{sec_3} describes the components of the proposed PRNG and the techniques used to improve unpredictability. Section \ref{sec_4} outlines the architecture and hardware implementation of the proposed PRNG. Section \ref{sec_5} presents the results of the validation process, including an analysis of statistical, chaotic, and cryptographic properties, along with a detailed comparison with existing literature. Section \ref{sec_6} summarizes and discusses the findings of the PRNG's performance.
 
 \section{Background and motivation}\label{sec_2}
@@ -338,7 +337,7 @@ To accurately capture the hyperchaotic behavior without causing chaotic degradat
 %% Use \subsection commands to start a subsection.
 
 {\color{red}
-The system will be discretized into fixed-point arithmetic, this will become more important later in the article. It is important to note that only after 12 bits of precision does the system maintain hyperchaotic behavior, as can be seen in figure \ref{fig_4D-HC4S_pres}, whereas lower precision makes the system step out of hyperchaos by its second LE.
+The system will be discretized into fixed-point arithmetic, this will become more important later in the article. It is important to note that only after 12 bits of precision does the system maintain hyperchaotic behavior, as can be seen in Figure \ref{fig_4D-HC4S_pres}, whereas lower precision makes the system step out of hyperchaos by its second LE.
 }
 \begin{figure}[!htb]
 \centering
@@ -352,7 +351,7 @@ The system will be discretized into fixed-point arithmetic, this will become mor
 
 \subsection{Proposed enhanced 4D hyperchaotic four-scroll system}
 \label{subsec3_2}
-The introduction of modular multiplication has been shown to improve the chaotic characteristics of a system, particularly its sensitivity to initial conditions \cite{hua_two-dimensional_2020, meranza-castillon_pseudorandom_2019, murillo-escobar_pseudorandom_2023}. This principle is applied to the 4D-HC4S system by multiplying its states by a large number, 12227, and then applying a modulo 1 operation to extract the fractional component. This constant was selected empirically based on its ability to produce a mostly uniform distribution across the state space, while being large enough to allow proper mixing of smaller and higher decimals.
+The introduction of modular multiplication has been shown to improve the chaotic characteristics of a system, particularly its sensitivity to initial conditions \cite{hua_two-dimensional_2020, meranza-castillon_pseudorandom_2019, murillo-escobar_pseudorandom_2023}. This principle is applied to the 4D-HC4S system by multiplying its states by a large number, 12227, and then applying a modulo 1 operation to extract the fractional component. This constant was selected empirically based on its ability to produce a mostly uniform distribution across the state space, while being large enough to allow proper mixing of smaller and higher decimals (according with the analysis in subsection \ref{par_and_per}).
 
 Applying this enhancement to the original 4D-HC4S discretized system (Eq. \ref{eq_2}), the 4D Enhanced Hyperchaotic Four-Scroll System (4D-EHC4S) was created and is described in Eq. \ref{eq_4} and Eq. \ref{eq_5}. This new system will be used as the primary module of the proposed PRNG. Here, $XE$ represents the states of the system, though it uses the same variables, time difference $h$ and set of equations defined in 4D-HC4S. 
 \begin{align}
@@ -434,7 +433,7 @@ The bifurcation diagram presented in Figure \ref{fig_5}, further corroborates th
 \end{figure*}
 
 {\color{red}
-\subsection{Parameters and perturbations selection}
+\subsection{Parameters and perturbations selection}\label{par_and_per}
 To optimize resource usage, all states and parameters are represented using signed fixed-point arithmetic. Custom Q formats were assigned to each variable based on its dynamic range and the precision required to preserve the system's chaotic behavior. In particular, the parameters and states of both systems must be maintained at a precision such that marginal quantization errors do not affect their chaotic dynamics. The system parameters were selected to strictly match those specified in the original publications. Deviating significantly from these nominal values can cause the system to exit the chaotic regime, converge to periodic orbits, or exhibit instability.
 
 A perturbation margin of $\Delta_m=\pm2^{-5}$ was determined to be the safe threshold for the 2D-HCAC system. Since two distinct perturbation sources must be accounted for, parametric perturbation and key integration, the latter requiring 16 bits of precision, a standard fractional precision of $\Delta_{st}=\pm2^{-21}$ was adopted for most variables. The same fractional precision was used for the states of 4D-EHC4S, though their overall precision shouldn't greatly affect the system's behavior, due to the presence of the multiplier.
@@ -443,8 +442,8 @@ The system’s numerical precision directly influences the chaotic dynamics of t
 
 In the 4D-EHC4S system, the modular multiplication module effectively dictates the largest Lyapunov exponents (LEs). Because of this dominance, the system reliably achieves hyperchaotic dynamics over a wide parameter space, reducing the sensitivity of the design to exact parameter selection. Nevertheless, the system's behavior is constrained at extreme parameter limits. Although the phase space remains bounded, excessively high parameter values cause the differential derivatives to grow by orders of magnitude. This results in highly stiff differential equations, which require drastically reduced numerical integration step sizes and consequently demand substantially higher computational power.
 
-Regarding the parameter for modular multiplication, a sweep of values was made for multiple sets of lengths, the chi-square p-value was measured looking to optimize this value for the multiple output lengths. 12227 has been chosen empirically in order to maximize the uniformity of the system output. This variable needs to be big enough to effectively mix the various parts of the dimension, while not so large as to cause high computational overhead.
-The results can be seen in figure \ref{fig_multi}.
+Regarding the parameter for modular multiplication, a sweep of values was made for multiple sets of lengths, the chi-square p-value was measured looking to optimize this value for the multiple output lengths. The value of 12227 has been chosen empirically in order to maximize the uniformity of the system output. This variable needs to be big enough to effectively mix the various parts of the dimension, while not so large as to cause high computational overhead.
+The results can be seen in Figure \ref{fig_multi}.
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.72\textwidth]{Figuras IEEE/Multi_histo_chi.pdf}
@@ -778,7 +777,11 @@ The estimator breakdown reveals a consistent convergence across different models
 \begin{table}[htb]
 \centering
 \footnotesize
-\caption{PRNG NIST 800-90B results.}
+\caption{
+  {\color{red}
+  PRNG NIST 800-90B results.
+  }
+  }
 \label{tab_nist_90B}
 \begin{tblr}{
   colspec = {cccccc},
