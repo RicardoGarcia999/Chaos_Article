@@ -324,7 +324,7 @@ Complementing this, bifurcation diagrams, Figure \ref{fig_3}, visually illustrat
 \label{fig_3}
 \end{figure*}
 {\color{red}
-The continuous 4D system is discretized via the Euler method. While advanced solvers like the Runge-Kutta 4 (RK4) method offer superior numerical accuracy and reduce state correlation, they impose heavy computational overhead and consume excessive hardware resources.In some instances, less complicated numerical solutions have been found to have better chaotic response \cite{senouci_fpga_2017}. To maintain hardware efficiency, the Euler method was applied; however, it should be acknowledged that a small step size can introduce correlation between consecutive continuous states. 
+The continuous 4D system is discretized via the Euler method. While advanced solvers like the Runge-Kutta 4 (RK4) method offer superior numerical accuracy and reduce state correlation, they impose heavy computational overhead and consume excessive hardware resources. In some instances, less complicated numerical solutions have been found to have better chaotic response \cite{senouci_fpga_2017}. To maintain hardware efficiency, the Euler method was applied; however, it should be acknowledged that a small step size can introduce correlation between consecutive continuous states. 
 }
 To accurately capture the hyperchaotic behavior without causing chaotic degradation while minimizing the number of iterations needed in the system, a time difference of $h=0.0001$ is used, higher values resulted in the chaotic behavior degrading. This application of Euler’s method to 4D-HC4S results in Eq. \ref{eq_2}.
 \begin{equation}
@@ -337,7 +337,7 @@ To accurately capture the hyperchaotic behavior without causing chaotic degradat
 %% Use \subsection commands to start a subsection.
 
 {\color{red}
-The system will be discretized into fixed-point arithmetic, this will become more important later in the article. It is important to note that only after 12 bits of precision does the system maintain hyperchaotic behavior, as can be seen in Figure \ref{fig_4D-HC4S_pres}, whereas lower precision makes the system step out of hyperchaos by its second LE.
+The system will be discretized into fixed-point arithmetic, this will become more important later in the article. It is important to note that only after 12 bits of precision does the system maintain hyperchaotic behavior. As seen in Figure \ref{fig_4D-HC4S_pres}, lower precision causes the system to step out of hyperchaos, indicated by a negative second Lyapunov Exponent."
 }
 \begin{figure}[!htb]
 \centering
@@ -374,7 +374,7 @@ The Lyapunov exponents of the discretized system, in nats/iteration, are given b
 \label{eq_EHC4S}
 LE({\text{4D-EHC4S}}) &\approx \ln(multiplier) + LE({\text{Eu-4D}})_{cont} \times h
 \end{align}
-Thus the largest Lyapunov exponents $LE \approx 9.4114$ in this case. While a higher value of the multiplier or parameters may seem to be a much better approach, the higher computational cost of using the multipliers needs to be taken into account, more discussion on the parameters selected is given in a future section.
+Thus, the largest Lyapunov exponents is $LE \approx 9.4114$ in this case. While a higher value of the multiplier or parameters may seem to be a much better approach, the higher computational cost of using the multipliers needs to be taken into account, more discussion on the parameters selected is given in a future section.
 }
 
 \begin{figure}[!t]
@@ -440,14 +440,14 @@ A perturbation margin of $\Delta_m=\pm2^{-5}$ was determined to be the safe thre
 
 The system’s numerical precision directly influences the chaotic dynamics of the original 4D model \ref{fig_4D-HC4S_pres}. Maintaining a fractional precision greater than 12 bits is essential. With 21 bits, the system reliably preserves its inherent hyperchaotic behavior.
 
-In the 4D-EHC4S system, the modular multiplication module effectively dictates the largest Lyapunov exponents (LEs). Because of this dominance, the system reliably achieves hyperchaotic dynamics over a wide parameter space, reducing the sensitivity of the design to exact parameter selection. Nevertheless, the system's behavior is constrained at extreme parameter limits. Although the phase space remains bounded, excessively high parameter values cause the differential derivatives to grow by orders of magnitude. This results in highly stiff differential equations, which require drastically reduced numerical integration step sizes and consequently demand substantially higher computational power.
+In the 4D-EHC4S system, the modular multiplication module effectively dictates the largest Lyapunov exponents (LEs). Because of this dominance, the system reliably achieves hyperchaotic dynamics over a wide parameter space, reducing the sensitivity of the design to exact parameter selection. Nevertheless, the system's behavior is constrained at extreme parameter limits. Although the phase space remains bounded, excessively high parameter values cause the derivatives to grow by orders of magnitude. This results in highly stiff differential equations, which require drastically reduced numerical integration step sizes and consequently demand substantially higher computational power.
 
 Regarding the parameter for modular multiplication, a sweep of values was made for multiple sets of lengths, the chi-square p-value was measured looking to optimize this value for the multiple output lengths. The value of 12227 has been chosen empirically in order to maximize the uniformity of the system output. This variable needs to be big enough to effectively mix the various parts of the dimension, while not so large as to cause high computational overhead.
 The results can be seen in Figure \ref{fig_multi}.
 \begin{figure}[!htb]
 \centering
 \includegraphics[width=0.72\textwidth]{Figuras IEEE/Multi_histo_chi.pdf}
-\caption{Chi-Square results for multiplicator sweep.\label{fig_multi}}
+\caption{Chi-Square results for multiplier sweep.\label{fig_multi}}
 \end{figure}
 
 
@@ -525,7 +525,7 @@ Finally, these three selected streams are combined via an XOR operation to produ
 
 \section{Hardware implementation}\label{sec_4}
 \subsection{Hardware}
-For the hardware realization of this work, the Terasic DE2-115 development board serves as the platform for this work. This robust development board is equipped with an Altera Cyclone IV E EP4CE115F29C7 FPGA chip with a {\color{red} clock frequency of 50 MHz}. This FPGA is a commonly adopted choice in contemporary research efforts  \cite{meranza-castillon_pseudorandom_2019} due to its advantageous balance of cost-effectiveness, low power consumption, and substantial logic resources.
+The Terasic DE2-115 development board serves as the platform for this work. This robust development board is equipped with an Altera Cyclone IV E EP4CE115F29C7 FPGA chip with a {\color{red} clock frequency of 50 MHz}. This FPGA is a commonly adopted choice in contemporary research efforts  \cite{meranza-castillon_pseudorandom_2019} due to its advantageous balance of cost-effectiveness, low power consumption, and substantial logic resources.
 
 To enable efficient transmission of the generated data for analysis, the simple UART protocol (Universal Asynchronous Receiver/Transmitter) will be used.
 
@@ -662,7 +662,7 @@ To effectively resist brute force attacks, a PRNG's key space must be sufficient
 \subsection{Time analysis}
 The time performance of the proposed PRNG was evaluated based on its maximum operating frequency and overall data throughput. Driven by the FPGA's actual 50 MHz clock, with an 8-bit output width for the PRNG yields a throughput of 66.6 Mb/s. While increasing the output width could achieve higher throughput, testing for such a throughput has not been performed.
 
-A timing analysis of the proposed system demonstrates a maximum operating clock frequency of 55.41 MHz. With a critical path delay of 18.375ns. To eliminate negative slack and satisfy timing constraints, the chaotic generator was implemented using a 6-stage pipelined architecture. While this deep pipelining successfully breaks down the critical path of the complex chaotic arithmetic, there is an inherent tradeoff between the algebraic complexity of the chosen map and the maximum attainable clock speed. 
+A timing analysis of the proposed system demonstrates a maximum operating clock frequency of 55.41 MHz. With a critical path delay of 18.375ns, the chaotic generator was implemented using a 6-stage pipelined architecture to eliminate negative slack and satisfy timing constraints. While this deep pipelining successfully breaks down the critical path of the complex chaotic arithmetic, there is an inherent tradeoff between the algebraic complexity of the chosen map and the maximum attainable clock speed. 
 }
 \subsection{Key sensitivity}
 A fundamental characteristic of a cryptographically secure PRNG is its extreme sensitivity to changes in its input key. Even the slightest alteration in the key must result in drastically different output sequences. This property demonstrates a high degree of unpredictability in the PRNG's output and proves resistance to exploitation of underlying patterns.
@@ -703,7 +703,7 @@ The resulting chi-square p-value ($p = 0.41631$) exceeded the standard significa
 \subsection{Gottwald-Melbourne 0-1 test for chaos}
 Although chaos testing is not typically applied to PRNGs, given that they are not strictly chaotic systems, employing such tests can provide additional support for the notion of chaotic behavior within the PRNG, despite differences in testing methodology.
 
-The 0-1 test, developed by Gottwald-Melbourne \cite{gottwald_new_2004}, assesses chaos by calculating the correlation coefficient $K$ from the time series. A value of $K \approx 1$ indicates chaotic behavior, while $K \approx 0$ indicates a lack of chaos. An analysis of 5,000 sequences generated using $KEY_\text{ref}$ yielded a value $K = 0.9980$, effectively demonstrating chaotic content within the system.
+The 0-1 test, developed by Gottwald and Melbourne \cite{gottwald_new_2004}, assesses chaos by calculating the correlation coefficient $K$ from the time series. A value of $K \approx 1$ indicates chaotic behavior, while $K \approx 0$ indicates a lack of chaos. An analysis of 5,000 sequences generated using $KEY_\text{ref}$ yielded a value $K = 0.9980$, effectively demonstrating chaotic content within the system.
 
 The maximum Lyapunov exponent from the 4D-EHC4S system was measured to be $LE_{max} = 9.4114$. While not commonly applied directly to PRNGs themselves, methods for analyzing the maximum Lyapunov exponent from a time series prove beneficial in this context. Applying the Rosenstein algorithm \cite{rosenstein_practical_1993} to the PRNG's output resulted in $LE_{max} = 0.674924$. Although this value is smaller than that observed in the standalone 4D-EHC4S system, its positive nature serves as further evidence to support the chaotic characteristics embedded within the PRNG.
 
@@ -857,7 +857,7 @@ Beyond cryptographic applications, the proposed framework presents significant p
 
 A limitation of the current initial key integration is its reliance on static fractional scaling. This linear mapping can potentially introduce predictable relationships between the key bits and the initial chaotic states, which may reduce the effective key space against sophisticated cryptanalysis. To mitigate this vulnerability and further enhance cryptographic security, future iterations of the framework could incorporate a dynamic, nonlinear key scheduling algorithm, as well as dynamic bit width adaptive mechanism.
 
-While this work focuses on the PRNG's statistical quality, the post-processing architecture introduces potential timing bottlenecks and side-channel leakage. Data-dependent hardware operations can create power and timing variations, exposing the design to Side-Channel Attacks. Comprehensive physical security evaluations and countermeasures were outside the scope of this study. However, mitigating these hardware vulnerabilities is a critical next step for real-world, production-grade deployment.
+While this work focuses on the PRNG's statistical quality, the post-processing architecture introduces potential timing bottlenecks and side-channel leakage. Data-dependent hardware operations can create power and timing variations, exposing the design to side-channel attacks. Comprehensive physical security evaluations and countermeasures were outside the scope of this study. However, mitigating these hardware vulnerabilities is a critical next step for real-world, production-grade deployment.
 }
 
 
